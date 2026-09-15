@@ -1,0 +1,5802 @@
+{
+  "schemaVersion": 1,
+  "repository": "SkidderClub/Vibe",
+  "sha": "1c10b9d59b3f6d3578e7421f0afeef34b956b5fb",
+  "generatedAt": "2026-09-15T14:27:46.491Z",
+  "version": "0.0.5",
+  "categories": [
+    {
+      "id": "COMBAT",
+      "name": "Combat"
+    },
+    {
+      "id": "VISUAL",
+      "name": "Visual"
+    },
+    {
+      "id": "MOVEMENT",
+      "name": "Movement"
+    },
+    {
+      "id": "WORLD",
+      "name": "World"
+    },
+    {
+      "id": "MEME",
+      "name": "Meme"
+    },
+    {
+      "id": "CLIENT",
+      "name": "Client"
+    },
+    {
+      "id": "SCRIPTS",
+      "name": "Scripts"
+    }
+  ],
+  "modules": [
+    {
+      "id": "EspModule",
+      "name": "ESP",
+      "description": "2D, 3D and customizable model Chams ESP",
+      "category": "VISUAL",
+      "key": "P",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "ESP Modes",
+          "variable": "modes",
+          "name": "ESP Modes",
+          "type": "multiselect",
+          "options": [
+            "3D",
+            "2D",
+            "Chams"
+          ],
+          "default": [
+            "3D"
+          ]
+        },
+        {
+          "id": "Outline Color",
+          "variable": "outlineColor",
+          "name": "Outline Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255
+        },
+        {
+          "id": "Fill Color",
+          "variable": "fillColor",
+          "name": "Fill Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 52
+        },
+        {
+          "id": "Player Color Mode",
+          "variable": "playerColorMode",
+          "name": "Player Color Mode",
+          "type": "mode",
+          "default": "Color",
+          "options": [
+            "Color",
+            "Team Color",
+            "Rainbow"
+          ]
+        },
+        {
+          "id": "Color Fade",
+          "variable": "colorFade",
+          "name": "Color Fade",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Fade Start",
+          "variable": "fadeStart",
+          "name": "Fade Start",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255,
+          "condition": "colorFade.isEnabled()"
+        },
+        {
+          "id": "Fade End",
+          "variable": "fadeEnd",
+          "name": "Fade End",
+          "type": "color",
+          "default": "#a855f7",
+          "alpha": 255,
+          "condition": "colorFade.isEnabled()"
+        },
+        {
+          "id": "Fade Speed",
+          "variable": "fadeSpeed",
+          "name": "Fade Speed",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 4,
+          "step": 0.1,
+          "condition": "colorFade.isEnabled()"
+        },
+        {
+          "id": "Line Width",
+          "variable": "lineWidth",
+          "name": "Line Width",
+          "type": "number",
+          "default": 1.5,
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "condition": "modes.isSelected(\"3D\")"
+        },
+        {
+          "id": "Through Walls",
+          "variable": "throughWalls",
+          "name": "Through Walls",
+          "type": "boolean",
+          "default": true,
+          "condition": "modes.isSelected(\"3D\")"
+        },
+        {
+          "id": "Names",
+          "variable": "names",
+          "name": "Names",
+          "type": "boolean",
+          "default": true,
+          "condition": "modes.isSelected(\"2D\")"
+        },
+        {
+          "id": "Health Bar",
+          "variable": "health",
+          "name": "Health Bar",
+          "type": "boolean",
+          "default": true,
+          "condition": "modes.isSelected(\"2D\")"
+        },
+        {
+          "id": "Health Bar Width",
+          "variable": "healthBarWidth",
+          "name": "Health Bar Width",
+          "type": "number",
+          "default": 1,
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "condition": "modes.isSelected(\"2D\") && health.isEnabled()"
+        },
+        {
+          "id": "Health Fade",
+          "variable": "healthFade",
+          "name": "Health Fade",
+          "type": "boolean",
+          "default": true,
+          "condition": "modes.isSelected(\"2D\") && health.isEnabled()"
+        },
+        {
+          "id": "Health Start Color",
+          "variable": "healthStart",
+          "name": "Health Start Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255,
+          "condition": "modes.isSelected(\"2D\") && health.isEnabled()"
+        },
+        {
+          "id": "Health End Color",
+          "variable": "healthEnd",
+          "name": "Health End Color",
+          "type": "color",
+          "default": "#ff5b6e",
+          "alpha": 255,
+          "condition": "modes.isSelected(\"2D\") && health.isEnabled()"
+        },
+        {
+          "id": "Depth Backplate",
+          "variable": "depthBackplate",
+          "name": "Depth Backplate",
+          "type": "boolean",
+          "default": true,
+          "condition": "modes.isSelected(\"2D\")"
+        },
+        {
+          "id": "Held Item",
+          "variable": "heldItem",
+          "name": "Held Item",
+          "type": "boolean",
+          "default": true,
+          "condition": "modes.isSelected(\"2D\")"
+        },
+        {
+          "id": "Distance",
+          "variable": "distance",
+          "name": "Distance",
+          "type": "boolean",
+          "default": true,
+          "condition": "modes.isSelected(\"2D\")"
+        },
+        {
+          "id": "Name Position",
+          "variable": "namePosition",
+          "name": "Name Position",
+          "type": "mode",
+          "default": "Top",
+          "options": [
+            "Top",
+            "Bottom",
+            "Left",
+            "Right"
+          ]
+        },
+        {
+          "id": "Health Bar Position",
+          "variable": "healthPosition",
+          "name": "Health Bar Position",
+          "type": "mode",
+          "default": "Left",
+          "options": [
+            "Left",
+            "Right"
+          ],
+          "condition": "modes.isSelected(\"2D\") && health.isEnabled()"
+        },
+        {
+          "id": "Distance Position",
+          "variable": "distancePosition",
+          "name": "Distance Position",
+          "type": "mode",
+          "default": "Name",
+          "options": [
+            "Name",
+            "Top",
+            "Bottom",
+            "Left",
+            "Right"
+          ]
+        },
+        {
+          "id": "Held Item Position",
+          "variable": "heldPosition",
+          "name": "Held Item Position",
+          "type": "mode",
+          "default": "Bottom",
+          "options": [
+            "Bottom",
+            "Top",
+            "Left",
+            "Right"
+          ]
+        },
+        {
+          "id": "Friends/Teams Use Player Defaults",
+          "variable": "usePlayerDefaults",
+          "name": "Friends/Teams Use Player Defaults",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Friends/Teams Color Mode",
+          "variable": "colorMode",
+          "name": "Friends/Teams Color Mode",
+          "type": "mode",
+          "default": "Color",
+          "options": [
+            "Color",
+            "Team Color",
+            "Rainbow"
+          ],
+          "dynamic": true,
+          "note": "Additional choices are loaded from your local client files."
+        },
+        {
+          "id": "Friends/Teams Override Color",
+          "variable": "overrideColor",
+          "name": "Friends/Teams Override Color",
+          "type": "color",
+          "default": "#5be8a6",
+          "alpha": 255
+        },
+        {
+          "id": "Friends/Teams Outline",
+          "variable": "outline",
+          "name": "Friends/Teams Outline",
+          "type": "color",
+          "default": "#5be8a6",
+          "alpha": 255
+        },
+        {
+          "id": "Friends/Teams Fill",
+          "variable": "fill",
+          "name": "Friends/Teams Fill",
+          "type": "color",
+          "default": "#5be8a6",
+          "alpha": 52
+        },
+        {
+          "id": "Friends/Teams Health Start",
+          "variable": "healthStartColor",
+          "name": "Friends/Teams Health Start",
+          "type": "color",
+          "default": "#5be8a6",
+          "alpha": 255
+        },
+        {
+          "id": "Friends/Teams Health End",
+          "variable": "healthEndColor",
+          "name": "Friends/Teams Health End",
+          "type": "color",
+          "default": "#ff5b6e",
+          "alpha": 255
+        },
+        {
+          "id": "Friends/Teams Names",
+          "variable": "profileNames",
+          "name": "Friends/Teams Names",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Friends/Teams Health",
+          "variable": "profileHealth",
+          "name": "Friends/Teams Health",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Friends/Teams Held Item",
+          "variable": "profileHeld",
+          "name": "Friends/Teams Held Item",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Friends/Teams Distance",
+          "variable": "profileDistance",
+          "name": "Friends/Teams Distance",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Friends/Teams Backplate",
+          "variable": "profileDepth",
+          "name": "Friends/Teams Backplate",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Friends/Teams Health Fade",
+          "variable": "profileHealthFade",
+          "name": "Friends/Teams Health Fade",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Friends/Teams Health Width",
+          "variable": "profileHealthWidth",
+          "name": "Friends/Teams Health Width",
+          "type": "number",
+          "default": 1,
+          "min": 1,
+          "max": 5,
+          "step": 1
+        },
+        {
+          "id": "Friends/Teams Name Position",
+          "variable": "profileNamePosition",
+          "name": "Friends/Teams Name Position",
+          "type": "mode",
+          "default": "Top",
+          "options": [
+            "Top",
+            "Bottom",
+            "Left",
+            "Right"
+          ]
+        },
+        {
+          "id": "Friends/Teams Health Position",
+          "variable": "profileHealthPosition",
+          "name": "Friends/Teams Health Position",
+          "type": "mode",
+          "default": "Left",
+          "options": [
+            "Left",
+            "Right"
+          ],
+          "dynamic": true,
+          "note": "Additional choices are loaded from your local client files."
+        },
+        {
+          "id": "Friends/Teams Distance Position",
+          "variable": "profileDistancePosition",
+          "name": "Friends/Teams Distance Position",
+          "type": "mode",
+          "default": "Name",
+          "options": [
+            "Name",
+            "Top",
+            "Bottom",
+            "Left",
+            "Right"
+          ]
+        },
+        {
+          "id": "Friends/Teams Held Position",
+          "variable": "profileHeldPosition",
+          "name": "Friends/Teams Held Position",
+          "type": "mode",
+          "default": "Bottom",
+          "options": [
+            "Bottom",
+            "Top",
+            "Left",
+            "Right"
+          ]
+        },
+        {
+          "id": "Targets Use Player Defaults",
+          "variable": "usePlayerDefaults",
+          "name": "Targets Use Player Defaults",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Targets Color Mode",
+          "variable": "colorMode",
+          "name": "Targets Color Mode",
+          "type": "mode",
+          "default": "Color",
+          "options": [
+            "Color",
+            "Team Color",
+            "Rainbow"
+          ],
+          "dynamic": true,
+          "note": "Additional choices are loaded from your local client files."
+        },
+        {
+          "id": "Targets Override Color",
+          "variable": "overrideColor",
+          "name": "Targets Override Color",
+          "type": "color",
+          "default": "#ff5b6e",
+          "alpha": 255
+        },
+        {
+          "id": "Targets Outline",
+          "variable": "outline",
+          "name": "Targets Outline",
+          "type": "color",
+          "default": "#ff5b6e",
+          "alpha": 255
+        },
+        {
+          "id": "Targets Fill",
+          "variable": "fill",
+          "name": "Targets Fill",
+          "type": "color",
+          "default": "#ff5b6e",
+          "alpha": 52
+        },
+        {
+          "id": "Targets Health Start",
+          "variable": "healthStartColor",
+          "name": "Targets Health Start",
+          "type": "color",
+          "default": "#ff5b6e",
+          "alpha": 255
+        },
+        {
+          "id": "Targets Health End",
+          "variable": "healthEndColor",
+          "name": "Targets Health End",
+          "type": "color",
+          "default": "#ff5b6e",
+          "alpha": 255
+        },
+        {
+          "id": "Targets Names",
+          "variable": "profileNames",
+          "name": "Targets Names",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Targets Health",
+          "variable": "profileHealth",
+          "name": "Targets Health",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Targets Held Item",
+          "variable": "profileHeld",
+          "name": "Targets Held Item",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Targets Distance",
+          "variable": "profileDistance",
+          "name": "Targets Distance",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Targets Backplate",
+          "variable": "profileDepth",
+          "name": "Targets Backplate",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Targets Health Fade",
+          "variable": "profileHealthFade",
+          "name": "Targets Health Fade",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Targets Health Width",
+          "variable": "profileHealthWidth",
+          "name": "Targets Health Width",
+          "type": "number",
+          "default": 1,
+          "min": 1,
+          "max": 5,
+          "step": 1
+        },
+        {
+          "id": "Targets Name Position",
+          "variable": "profileNamePosition",
+          "name": "Targets Name Position",
+          "type": "mode",
+          "default": "Top",
+          "options": [
+            "Top",
+            "Bottom",
+            "Left",
+            "Right"
+          ]
+        },
+        {
+          "id": "Targets Health Position",
+          "variable": "profileHealthPosition",
+          "name": "Targets Health Position",
+          "type": "mode",
+          "default": "Left",
+          "options": [
+            "Left",
+            "Right"
+          ],
+          "dynamic": true,
+          "note": "Additional choices are loaded from your local client files."
+        },
+        {
+          "id": "Targets Distance Position",
+          "variable": "profileDistancePosition",
+          "name": "Targets Distance Position",
+          "type": "mode",
+          "default": "Name",
+          "options": [
+            "Name",
+            "Top",
+            "Bottom",
+            "Left",
+            "Right"
+          ]
+        },
+        {
+          "id": "Targets Held Position",
+          "variable": "profileHeldPosition",
+          "name": "Targets Held Position",
+          "type": "mode",
+          "default": "Bottom",
+          "options": [
+            "Bottom",
+            "Top",
+            "Left",
+            "Right"
+          ]
+        },
+        {
+          "id": "Invisible Armor",
+          "variable": "armor",
+          "name": "Invisible Armor",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Invisible Show Skin",
+          "variable": "showSkin",
+          "name": "Invisible Show Skin",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Invisible Mode",
+          "variable": "mode",
+          "name": "Invisible Mode",
+          "type": "mode",
+          "default": "Flat",
+          "options": [
+            "Flat",
+            "Glow",
+            "Metallic"
+          ]
+        },
+        {
+          "id": "Invisible Color",
+          "variable": "color",
+          "name": "Invisible Color",
+          "type": "color",
+          "default": "#ff5b6e",
+          "alpha": 191
+        },
+        {
+          "id": "Visible Armor",
+          "variable": "armor",
+          "name": "Visible Armor",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Visible Show Skin",
+          "variable": "showSkin",
+          "name": "Visible Show Skin",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Visible Mode",
+          "variable": "mode",
+          "name": "Visible Mode",
+          "type": "mode",
+          "default": "Flat",
+          "options": [
+            "Flat",
+            "Glow",
+            "Metallic"
+          ]
+        },
+        {
+          "id": "Visible Color",
+          "variable": "color",
+          "name": "Visible Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 191
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/EspModule.java"
+    },
+    {
+      "id": "EspEditorModule",
+      "name": "ESP Editor",
+      "description": "Preview and arrange tactical ESP elements",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/EspEditorModule.java"
+    },
+    {
+      "id": "TargetEspModule",
+      "name": "TargetESP",
+      "description": "Highlight the active AimAssist target",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Modes",
+          "variable": "modes",
+          "name": "Modes",
+          "type": "multiselect",
+          "options": [
+            "Helix",
+            "Sims",
+            "Circle",
+            "Sigma",
+            "Swimming Tire",
+            "Tracer",
+            "Hizzy"
+          ],
+          "default": [
+            "Circle"
+          ]
+        },
+        {
+          "id": "Line Width",
+          "variable": "lineWidth",
+          "name": "Line Width",
+          "type": "number",
+          "default": 2,
+          "min": 1,
+          "max": 5,
+          "step": 0.5
+        },
+        {
+          "id": "Animation Speed",
+          "variable": "speed",
+          "name": "Animation Speed",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 4,
+          "step": 0.1
+        },
+        {
+          "id": "Helix Color 1",
+          "variable": "helixPrimary",
+          "name": "Helix Color 1",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Helix Color 2",
+          "variable": "helixSecondary",
+          "name": "Helix Color 2",
+          "type": "color",
+          "default": "#a855f7",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Sims Color 1",
+          "variable": "simsPrimary",
+          "name": "Sims Color 1",
+          "type": "color",
+          "default": "#68ff9b",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Sims Color 2",
+          "variable": "simsSecondary",
+          "name": "Sims Color 2",
+          "type": "color",
+          "default": "#16b85a",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Circle Color 1",
+          "variable": "circlePrimary",
+          "name": "Circle Color 1",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Circle Color 2",
+          "variable": "circleSecondary",
+          "name": "Circle Color 2",
+          "type": "color",
+          "default": "#a855f7",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Sigma Color 1",
+          "variable": "sigmaPrimary",
+          "name": "Sigma Color 1",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Sigma Color 2",
+          "variable": "sigmaSecondary",
+          "name": "Sigma Color 2",
+          "type": "color",
+          "default": "#a855f7",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Tire Color 1",
+          "variable": "tirePrimary",
+          "name": "Tire Color 1",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Tire Color 2",
+          "variable": "tireSecondary",
+          "name": "Tire Color 2",
+          "type": "color",
+          "default": "#a855f7",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Tracer Color 1",
+          "variable": "tracerPrimary",
+          "name": "Tracer Color 1",
+          "type": "color",
+          "default": "#ffffff",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Tracer Color 2",
+          "variable": "tracerSecondary",
+          "name": "Tracer Color 2",
+          "type": "color",
+          "default": "#ffffff",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Hizzy Color 1",
+          "variable": "hizzyPrimary",
+          "name": "Hizzy Color 1",
+          "type": "color",
+          "default": "#ff3bd4",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        },
+        {
+          "id": "Hizzy Color 2",
+          "variable": "hizzySecondary",
+          "name": "Hizzy Color 2",
+          "type": "color",
+          "default": "#3be7ff",
+          "alpha": 255,
+          "condition": "modes.isSelected(mode)"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/TargetEspModule.java"
+    },
+    {
+      "id": "ItemEspModule",
+      "name": "ItemESP",
+      "description": "Highlight dropped items",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Color",
+          "variable": "color",
+          "name": "Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255
+        },
+        {
+          "id": "Outline",
+          "variable": "outline",
+          "name": "Outline",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Outline Color",
+          "variable": "outlineColor",
+          "name": "Outline Color",
+          "type": "color",
+          "default": "#ffffff",
+          "alpha": 255,
+          "condition": "outline.isEnabled()"
+        },
+        {
+          "id": "Line Width",
+          "variable": "lineWidth",
+          "name": "Line Width",
+          "type": "number",
+          "default": 1.5,
+          "min": 1,
+          "max": 5,
+          "step": 0.5
+        },
+        {
+          "id": "Smart",
+          "variable": "smart",
+          "name": "Smart",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/ItemEspModule.java"
+    },
+    {
+      "id": "HitmarkerModule",
+      "name": "Hitmarker",
+      "description": "2D, 3D and expanding reflective torus hit confirmations",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Modes",
+          "variable": "modes",
+          "name": "Modes",
+          "type": "multiselect",
+          "options": [
+            "2D (Crosshair)",
+            "3D (World)",
+            "Torus"
+          ],
+          "default": [
+            "2D (Crosshair)"
+          ]
+        },
+        {
+          "id": "Torus Lifetime",
+          "variable": "torusLifetime",
+          "name": "Torus Lifetime",
+          "type": "number",
+          "default": 1000,
+          "min": 100,
+          "max": 5000,
+          "step": 50,
+          "condition": "modes.isSelected(\"Torus\")"
+        },
+        {
+          "id": "Torus Noise",
+          "variable": "torusNoise",
+          "name": "Torus Noise",
+          "type": "number",
+          "default": 50,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "condition": "modes.isSelected(\"Torus\")"
+        },
+        {
+          "id": "Torus Scale",
+          "variable": "torusScale",
+          "name": "Torus Scale",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 3,
+          "step": 0.05,
+          "condition": "modes.isSelected(\"Torus\")"
+        },
+        {
+          "id": "Torus Depth",
+          "variable": "torusDepth",
+          "name": "Torus Depth",
+          "type": "boolean",
+          "default": false,
+          "condition": "modes.isSelected(\"Torus\")"
+        },
+        {
+          "id": "Color",
+          "variable": "color",
+          "name": "Color",
+          "type": "color",
+          "default": "#ffffff",
+          "alpha": 255
+        },
+        {
+          "id": "Duration",
+          "variable": "duration",
+          "name": "Duration",
+          "type": "number",
+          "default": 240,
+          "min": 60,
+          "max": 1500,
+          "step": 10
+        },
+        {
+          "id": "Fade",
+          "variable": "fade",
+          "name": "Fade",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Fade Easing",
+          "variable": "fadeEasing",
+          "name": "Fade Easing",
+          "type": "mode",
+          "default": "Ease Out",
+          "options": [
+            "Ease Out",
+            "Linear",
+            "Ease In"
+          ],
+          "condition": "fade.isEnabled()"
+        },
+        {
+          "id": "3D Animation",
+          "variable": "worldAnimation",
+          "name": "3D Animation",
+          "type": "mode",
+          "default": "Static",
+          "options": [
+            "Static",
+            "Expand"
+          ],
+          "condition": "modes.isSelected(\"3D (World)\")"
+        },
+        {
+          "id": "2D Size",
+          "variable": "size2d",
+          "name": "2D Size",
+          "type": "number",
+          "default": 8,
+          "min": 2,
+          "max": 32,
+          "step": 1,
+          "condition": "modes.isSelected(\"2D (Crosshair)\")"
+        },
+        {
+          "id": "2D Line Width",
+          "variable": "width2d",
+          "name": "2D Line Width",
+          "type": "number",
+          "default": 1.5,
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "condition": "modes.isSelected(\"2D (Crosshair)\")"
+        },
+        {
+          "id": "3D Size",
+          "variable": "size3d",
+          "name": "3D Size",
+          "type": "number",
+          "default": 0.16,
+          "min": 0.04,
+          "max": 0.65,
+          "step": 0.01,
+          "condition": "modes.isSelected(\"3D (World)\")"
+        },
+        {
+          "id": "3D Line Width",
+          "variable": "width3d",
+          "name": "3D Line Width",
+          "type": "number",
+          "default": 2,
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "condition": "modes.isSelected(\"3D (World)\")"
+        },
+        {
+          "id": "3D Centre Gap",
+          "variable": "gap3d",
+          "name": "3D Centre Gap",
+          "type": "number",
+          "default": 0.07,
+          "min": 0.01,
+          "max": 0.3,
+          "step": 0.01,
+          "condition": "modes.isSelected(\"3D (World)\")"
+        },
+        {
+          "id": "3D Outline",
+          "variable": "outline3d",
+          "name": "3D Outline",
+          "type": "boolean",
+          "default": true,
+          "condition": "modes.isSelected(\"3D (World)\")"
+        },
+        {
+          "id": "3D Outline Color",
+          "variable": "outlineColor3d",
+          "name": "3D Outline Color",
+          "type": "color",
+          "default": "#000000",
+          "alpha": 200,
+          "condition": "modes.isSelected(\"3D (World)\") && outline3d.isEnabled()"
+        },
+        {
+          "id": "3D Through Walls",
+          "variable": "throughWalls",
+          "name": "3D Through Walls",
+          "type": "boolean",
+          "default": true,
+          "condition": "modes.isSelected(\"3D (World)\")"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/HitmarkerModule.java"
+    },
+    {
+      "id": "SkeletalModule",
+      "name": "Skeletal",
+      "description": "Render animated player skeletons",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Color",
+          "variable": "color",
+          "name": "Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255
+        },
+        {
+          "id": "Rainbow",
+          "variable": "rainbow",
+          "name": "Rainbow",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Line Width",
+          "variable": "lineWidth",
+          "name": "Line Width",
+          "type": "number",
+          "default": 2,
+          "min": 1,
+          "max": 5,
+          "step": 0.5
+        },
+        {
+          "id": "Only Targets",
+          "variable": "onlyTargets",
+          "name": "Only Targets",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Through Walls",
+          "variable": "throughWalls",
+          "name": "Through Walls",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Depth Backplate",
+          "variable": "depthBackplate",
+          "name": "Depth Backplate",
+          "type": "boolean",
+          "default": true
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/SkeletalModule.java"
+    },
+    {
+      "id": "CosmeticsModule",
+      "name": "Cosmetics",
+      "description": "Render the selected local and friend cosmetic presets",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/CosmeticsModule.java"
+    },
+    {
+      "id": "CosmeticsEditorModule",
+      "name": "Cosmetics Editor",
+      "description": "Create, preview and assign cosmetic presets",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/CosmeticsEditorModule.java"
+    },
+    {
+      "id": "ChestEspModule",
+      "name": "ChestESP",
+      "description": "Highlight normal, redstone, and ender chests",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Normal Chests",
+          "variable": "normal",
+          "name": "Normal Chests",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Normal Outline",
+          "variable": "normalOutline",
+          "name": "Normal Outline",
+          "type": "color",
+          "default": "#ffd166",
+          "alpha": 255,
+          "condition": "normal.isEnabled()"
+        },
+        {
+          "id": "Normal Fill",
+          "variable": "normalFill",
+          "name": "Normal Fill",
+          "type": "color",
+          "default": "#ffd166",
+          "alpha": 53,
+          "condition": "normal.isEnabled()"
+        },
+        {
+          "id": "Redstone Chests",
+          "variable": "redstone",
+          "name": "Redstone Chests",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Redstone Outline",
+          "variable": "redstoneOutline",
+          "name": "Redstone Outline",
+          "type": "color",
+          "default": "#ff5b6e",
+          "alpha": 255,
+          "condition": "redstone.isEnabled()"
+        },
+        {
+          "id": "Redstone Fill",
+          "variable": "redstoneFill",
+          "name": "Redstone Fill",
+          "type": "color",
+          "default": "#ff5b6e",
+          "alpha": 53,
+          "condition": "redstone.isEnabled()"
+        },
+        {
+          "id": "Ender Chests",
+          "variable": "ender",
+          "name": "Ender Chests",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Ender Outline",
+          "variable": "enderOutline",
+          "name": "Ender Outline",
+          "type": "color",
+          "default": "#b388ff",
+          "alpha": 255,
+          "condition": "ender.isEnabled()"
+        },
+        {
+          "id": "Ender Fill",
+          "variable": "enderFill",
+          "name": "Ender Fill",
+          "type": "color",
+          "default": "#b388ff",
+          "alpha": 53,
+          "condition": "ender.isEnabled()"
+        },
+        {
+          "id": "Line Width",
+          "variable": "lineWidth",
+          "name": "Line Width",
+          "type": "number",
+          "default": 1.5,
+          "min": 1,
+          "max": 5,
+          "step": 0.5
+        },
+        {
+          "id": "Max Distance",
+          "variable": "maxDistance",
+          "name": "Max Distance",
+          "type": "number",
+          "default": 96,
+          "min": 8,
+          "max": 256,
+          "step": 1
+        },
+        {
+          "id": "Distance Color Fade",
+          "variable": "colorFade",
+          "name": "Distance Color Fade",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Near Color",
+          "variable": "nearColor",
+          "name": "Near Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255,
+          "condition": "colorFade.isEnabled()"
+        },
+        {
+          "id": "Far Color",
+          "variable": "farColor",
+          "name": "Far Color",
+          "type": "color",
+          "default": "#a855f7",
+          "alpha": 255,
+          "condition": "colorFade.isEnabled()"
+        },
+        {
+          "id": "Fade Alpha At Max",
+          "variable": "fadeAlpha",
+          "name": "Fade Alpha At Max",
+          "type": "boolean",
+          "default": true
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/ChestEspModule.java"
+    },
+    {
+      "id": "BedEspModule",
+      "name": "BedESP",
+      "description": "Highlights beds and nearby defensive blocks",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Bed Color Mode",
+          "variable": "colorMode",
+          "name": "Bed Color Mode",
+          "type": "mode",
+          "default": "Custom",
+          "options": [
+            "Custom",
+            "Wool"
+          ]
+        },
+        {
+          "id": "Wool Alpha",
+          "variable": "woolAlpha",
+          "name": "Wool Alpha",
+          "type": "number",
+          "default": 69,
+          "min": 0,
+          "max": 255,
+          "step": 1,
+          "condition": "colorMode.is(\"Wool\")"
+        },
+        {
+          "id": "Wool Outline",
+          "variable": "woolOutline",
+          "name": "Wool Outline",
+          "type": "boolean",
+          "default": true,
+          "condition": "colorMode.is(\"Wool\")"
+        },
+        {
+          "id": "Bed Outline",
+          "variable": "bedOutline",
+          "name": "Bed Outline",
+          "type": "color",
+          "default": "#ff4fa3",
+          "alpha": 255,
+          "condition": "colorMode.is(\"Custom\")"
+        },
+        {
+          "id": "Bed Fill",
+          "variable": "bedFill",
+          "name": "Bed Fill",
+          "type": "color",
+          "default": "#ff4fa3",
+          "alpha": 69,
+          "condition": "colorMode.is(\"Custom\")"
+        },
+        {
+          "id": "Highlight Near Beds",
+          "variable": "highlights",
+          "name": "Highlight Near Beds",
+          "type": "multiselect",
+          "options": [
+            "Obsidian",
+            "Wood",
+            "Glass",
+            "Endstone"
+          ],
+          "default": [
+            "Obsidian",
+            "Wood",
+            "Glass",
+            "Endstone"
+          ]
+        },
+        {
+          "id": "Obsidian Outline",
+          "variable": "obsidianOutline",
+          "name": "Obsidian Outline",
+          "type": "color",
+          "default": "#ff4d4d",
+          "alpha": 255,
+          "condition": "highlights.isSelected(OBSIDIAN)"
+        },
+        {
+          "id": "Obsidian Fill",
+          "variable": "obsidianFill",
+          "name": "Obsidian Fill",
+          "type": "color",
+          "default": "#ff4d4d",
+          "alpha": 69,
+          "condition": "highlights.isSelected(OBSIDIAN)"
+        },
+        {
+          "id": "Wood Outline",
+          "variable": "woodOutline",
+          "name": "Wood Outline",
+          "type": "color",
+          "default": "#9b6a3d",
+          "alpha": 255,
+          "condition": "highlights.isSelected(WOOD)"
+        },
+        {
+          "id": "Wood Fill",
+          "variable": "woodFill",
+          "name": "Wood Fill",
+          "type": "color",
+          "default": "#9b6a3d",
+          "alpha": 69,
+          "condition": "highlights.isSelected(WOOD)"
+        },
+        {
+          "id": "Glass Outline",
+          "variable": "glassOutline",
+          "name": "Glass Outline",
+          "type": "color",
+          "default": "#ffffff",
+          "alpha": 255,
+          "condition": "highlights.isSelected(GLASS)"
+        },
+        {
+          "id": "Glass Fill",
+          "variable": "glassFill",
+          "name": "Glass Fill",
+          "type": "color",
+          "default": "#ffffff",
+          "alpha": 64,
+          "condition": "highlights.isSelected(GLASS)"
+        },
+        {
+          "id": "Endstone Outline",
+          "variable": "endstoneOutline",
+          "name": "Endstone Outline",
+          "type": "color",
+          "default": "#ffe08a",
+          "alpha": 255,
+          "condition": "highlights.isSelected(ENDSTONE)"
+        },
+        {
+          "id": "Endstone Fill",
+          "variable": "endstoneFill",
+          "name": "Endstone Fill",
+          "type": "color",
+          "default": "#ffe08a",
+          "alpha": 69,
+          "condition": "highlights.isSelected(ENDSTONE)"
+        },
+        {
+          "id": "View Distance",
+          "variable": "viewDistance",
+          "name": "View Distance",
+          "type": "number",
+          "default": 256,
+          "min": 8,
+          "max": 256,
+          "step": 1
+        },
+        {
+          "id": "Fade Alpha At Max",
+          "variable": "fadeAlpha",
+          "name": "Fade Alpha At Max",
+          "type": "boolean",
+          "default": true,
+          "condition": "!isUnlimited()"
+        },
+        {
+          "id": "Line Width",
+          "variable": "lineWidth",
+          "name": "Line Width",
+          "type": "number",
+          "default": 1.5,
+          "min": 1,
+          "max": 5,
+          "step": 0.5
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/BedEspModule.java"
+    },
+    {
+      "id": "BlockChangeEspModule",
+      "name": "BlockChangeESP",
+      "description": "Shows blocks you place or break for a short time",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Color",
+          "variable": "color",
+          "name": "Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 197
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/BlockChangeEspModule.java"
+    },
+    {
+      "id": "BlockOverlayModule",
+      "name": "BlockOverlay",
+      "description": "Customize the selected block outline and fill",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Outline",
+          "variable": "outline",
+          "name": "Outline",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Outline Mode",
+          "variable": "outlineMode",
+          "name": "Outline Mode",
+          "type": "mode",
+          "default": "Fade",
+          "options": [
+            "Fade",
+            "Static",
+            "Rainbow"
+          ],
+          "condition": "outline.isEnabled()"
+        },
+        {
+          "id": "Outline Primary Color",
+          "variable": "outlinePrimary",
+          "name": "Outline Primary Color",
+          "type": "color",
+          "default": "#efc2ff",
+          "alpha": 255,
+          "condition": "outline.isEnabled() && !outlineMode.is(\"Rainbow\")"
+        },
+        {
+          "id": "Outline Secondary Color",
+          "variable": "outlineSecondary",
+          "name": "Outline Secondary Color",
+          "type": "color",
+          "default": "#43e7d4",
+          "alpha": 255,
+          "condition": "outline.isEnabled() && outlineMode.is(\"Fade\")"
+        },
+        {
+          "id": "Outline Width",
+          "variable": "outlineWidth",
+          "name": "Outline Width",
+          "type": "number",
+          "default": 1.6,
+          "min": 0.5,
+          "max": 5,
+          "step": 0.1,
+          "condition": "outline.isEnabled()"
+        },
+        {
+          "id": "Fill",
+          "variable": "fill",
+          "name": "Fill",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Fill Mode",
+          "variable": "fillMode",
+          "name": "Fill Mode",
+          "type": "mode",
+          "default": "Fade",
+          "options": [
+            "Fade",
+            "Static",
+            "Rainbow"
+          ],
+          "condition": "fill.isEnabled()"
+        },
+        {
+          "id": "Fill Primary Color",
+          "variable": "fillPrimary",
+          "name": "Fill Primary Color",
+          "type": "color",
+          "default": "#2a6cff",
+          "alpha": 72,
+          "condition": "fill.isEnabled() && !fillMode.is(\"Rainbow\")"
+        },
+        {
+          "id": "Fill Secondary Color",
+          "variable": "fillSecondary",
+          "name": "Fill Secondary Color",
+          "type": "color",
+          "default": "#56f3c8",
+          "alpha": 72,
+          "condition": "fill.isEnabled() && fillMode.is(\"Fade\")"
+        },
+        {
+          "id": "Break Animation",
+          "variable": "breakAnimation",
+          "name": "Break Animation",
+          "type": "mode",
+          "default": "Inward Fill",
+          "options": [
+            "Inward Fill",
+            "Dissolve",
+            "Pulse Shatter"
+          ],
+          "condition": "fill.isEnabled()"
+        },
+        {
+          "id": "Animation Speed",
+          "variable": "animationSpeed",
+          "name": "Animation Speed",
+          "type": "number",
+          "default": 1,
+          "min": 0.25,
+          "max": 3,
+          "step": 0.05
+        },
+        {
+          "id": "Through Walls",
+          "variable": "throughWalls",
+          "name": "Through Walls",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/BlockOverlayModule.java"
+    },
+    {
+      "id": "CuteVisualsModule",
+      "name": "Cute Visuals",
+      "description": "Bed-break bursts and heart or dot trails",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Color Preset",
+          "variable": "colorPreset",
+          "name": "Color Preset",
+          "type": "mode",
+          "default": "Love",
+          "options": [
+            "Love",
+            "Red",
+            "Green",
+            "Blue",
+            "Yellow",
+            "Gray",
+            "Purple",
+            "LightBlue",
+            "Custom",
+            "China",
+            "Bavaria",
+            "Catton Candy"
+          ]
+        },
+        {
+          "id": "Primary Color",
+          "variable": "primaryColor",
+          "name": "Primary Color",
+          "type": "color",
+          "default": "#ff80cc",
+          "alpha": 255,
+          "condition": "colorPreset.is(\"Custom\")"
+        },
+        {
+          "id": "Secondary Color",
+          "variable": "secondaryColor",
+          "name": "Secondary Color",
+          "type": "color",
+          "default": "#ff4d99",
+          "alpha": 255,
+          "condition": "colorPreset.is(\"Custom\")"
+        },
+        {
+          "id": "Bed Sound",
+          "variable": "bedSound",
+          "name": "Bed Sound",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Bed Burst",
+          "variable": "bedBurst",
+          "name": "Bed Burst",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Bed Burst Count",
+          "variable": "burstCount",
+          "name": "Bed Burst Count",
+          "type": "number",
+          "default": 20,
+          "min": 5,
+          "max": 40,
+          "step": 1,
+          "condition": "bedBurst.isEnabled()"
+        },
+        {
+          "id": "Bed Burst Size",
+          "variable": "burstSize",
+          "name": "Bed Burst Size",
+          "type": "number",
+          "default": 0.2,
+          "min": 0.05,
+          "max": 0.6,
+          "step": 0.01,
+          "condition": "bedBurst.isEnabled()"
+        },
+        {
+          "id": "Bed Burst Speed",
+          "variable": "burstSpeed",
+          "name": "Bed Burst Speed",
+          "type": "number",
+          "default": 2.5,
+          "min": 0.5,
+          "max": 7,
+          "step": 0.1,
+          "condition": "bedBurst.isEnabled()"
+        },
+        {
+          "id": "Bed Burst Lifetime (ms)",
+          "variable": "burstLifetime",
+          "name": "Bed Burst Lifetime (ms)",
+          "type": "number",
+          "default": 1500,
+          "min": 500,
+          "max": 3000,
+          "step": 100,
+          "condition": "bedBurst.isEnabled()"
+        },
+        {
+          "id": "Rainbow",
+          "variable": "rainbow",
+          "name": "Rainbow",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Rainbow Line Width",
+          "variable": "rainbowLineWidth",
+          "name": "Rainbow Line Width",
+          "type": "number",
+          "default": 5,
+          "min": 1,
+          "max": 12,
+          "step": 0.5,
+          "condition": "rainbow.isEnabled()"
+        },
+        {
+          "id": "Rainbow Duration (ms)",
+          "variable": "rainbowDuration",
+          "name": "Rainbow Duration (ms)",
+          "type": "number",
+          "default": 3000,
+          "min": 1000,
+          "max": 6000,
+          "step": 200,
+          "condition": "rainbow.isEnabled()"
+        },
+        {
+          "id": "Only While Moving",
+          "variable": "onlyMoving",
+          "name": "Only While Moving",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Opacity",
+          "variable": "opacity",
+          "name": "Opacity",
+          "type": "number",
+          "default": 85,
+          "min": 20,
+          "max": 100,
+          "step": 5
+        },
+        {
+          "id": "Hearts",
+          "variable": "hearts",
+          "name": "Hearts",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Hearts Spawn Rate (ms)",
+          "variable": "heartsRate",
+          "name": "Hearts Spawn Rate (ms)",
+          "type": "number",
+          "default": 200,
+          "min": 50,
+          "max": 500,
+          "step": 10,
+          "condition": "hearts.isEnabled()"
+        },
+        {
+          "id": "Hearts Lifetime (ms)",
+          "variable": "heartsLifetime",
+          "name": "Hearts Lifetime (ms)",
+          "type": "number",
+          "default": 1500,
+          "min": 500,
+          "max": 4000,
+          "step": 100,
+          "condition": "hearts.isEnabled()"
+        },
+        {
+          "id": "Dots",
+          "variable": "dots",
+          "name": "Dots",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Dots Spawn Rate (ms)",
+          "variable": "dotsRate",
+          "name": "Dots Spawn Rate (ms)",
+          "type": "number",
+          "default": 100,
+          "min": 20,
+          "max": 200,
+          "step": 10,
+          "condition": "dots.isEnabled()"
+        },
+        {
+          "id": "Dots Lifetime (ms)",
+          "variable": "dotsLifetime",
+          "name": "Dots Lifetime (ms)",
+          "type": "number",
+          "default": 1500,
+          "min": 500,
+          "max": 5000,
+          "step": 100,
+          "condition": "dots.isEnabled()"
+        },
+        {
+          "id": "Pulse",
+          "variable": "pulse",
+          "name": "Pulse",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/CuteVisualsModule.java"
+    },
+    {
+      "id": "TrajectoriesModule",
+      "name": "Trajectories",
+      "description": "Predicts bow and throwable projectile paths",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Line Width",
+          "variable": "lineWidth",
+          "name": "Line Width",
+          "type": "number",
+          "default": 2,
+          "min": 1,
+          "max": 5,
+          "step": 0.1
+        },
+        {
+          "id": "Max Ticks",
+          "variable": "maxTicks",
+          "name": "Max Ticks",
+          "type": "number",
+          "default": 100,
+          "min": 30,
+          "max": 200,
+          "step": 10
+        },
+        {
+          "id": "Default Color",
+          "variable": "defaultColor",
+          "name": "Default Color",
+          "type": "color",
+          "default": "#8b76ff",
+          "alpha": 255
+        },
+        {
+          "id": "Enemy Hit",
+          "variable": "enemyColor",
+          "name": "Enemy Hit",
+          "type": "color",
+          "default": "#ff3232",
+          "alpha": 255
+        },
+        {
+          "id": "Wall Hit",
+          "variable": "wallColor",
+          "name": "Wall Hit",
+          "type": "color",
+          "default": "#32ff32",
+          "alpha": 255
+        },
+        {
+          "id": "Ground Hit",
+          "variable": "groundColor",
+          "name": "Ground Hit",
+          "type": "color",
+          "default": "#55ffff",
+          "alpha": 255
+        },
+        {
+          "id": "Show Landing Box",
+          "variable": "landingBox",
+          "name": "Show Landing Box",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Show Landing Cross",
+          "variable": "landingCross",
+          "name": "Show Landing Cross",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Show Landing Block",
+          "variable": "landingBlock",
+          "name": "Show Landing Block",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Highlight Entities",
+          "variable": "highlightEntities",
+          "name": "Highlight Entities",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Entity Trail",
+          "variable": "entityTrail",
+          "name": "Entity Trail",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Fade Out",
+          "variable": "fadeOut",
+          "name": "Fade Out",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Add Player Velocity",
+          "variable": "addPlayerVelocity",
+          "name": "Add Player Velocity",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Rainbow",
+          "variable": "rainbow",
+          "name": "Rainbow",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/TrajectoriesModule.java"
+    },
+    {
+      "id": "FullBrightModule",
+      "name": "FullBright",
+      "description": "Maximise local brightness",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/FullBrightModule.java"
+    },
+    {
+      "id": "FovChangerModule",
+      "name": "FOV Changer",
+      "description": "Set a custom client field of view",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "FOV",
+          "variable": "fov",
+          "name": "FOV",
+          "type": "number",
+          "default": 105,
+          "min": 30,
+          "max": 130,
+          "step": 1
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/FovChangerModule.java"
+    },
+    {
+      "id": "CustomCrosshairModule",
+      "name": "CustomCrosshair",
+      "description": "Custom first-person crosshair",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Style",
+          "variable": "style",
+          "name": "Style",
+          "type": "mode",
+          "default": "Cross",
+          "options": [
+            "Cross",
+            "Cross Dot",
+            "Dot",
+            "Circle",
+            "Dynamic"
+          ]
+        },
+        {
+          "id": "Color",
+          "variable": "color",
+          "name": "Color",
+          "type": "color",
+          "default": "#ffffff",
+          "alpha": 255
+        },
+        {
+          "id": "Rainbow",
+          "variable": "rainbow",
+          "name": "Rainbow",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Rainbow Speed",
+          "variable": "rainbowSpeed",
+          "name": "Rainbow Speed",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "condition": "rainbow.isEnabled()"
+        },
+        {
+          "id": "Opacity",
+          "variable": "opacity",
+          "name": "Opacity",
+          "type": "number",
+          "default": 255,
+          "min": 20,
+          "max": 255,
+          "step": 1
+        },
+        {
+          "id": "Arm Length",
+          "variable": "length",
+          "name": "Arm Length",
+          "type": "number",
+          "default": 6,
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "condition": "!style.is(\"Dot\") && !style.is(\"Circle\")"
+        },
+        {
+          "id": "Thickness",
+          "variable": "thickness",
+          "name": "Thickness",
+          "type": "number",
+          "default": 1,
+          "min": 1,
+          "max": 5,
+          "step": 1
+        },
+        {
+          "id": "Gap",
+          "variable": "gap",
+          "name": "Gap",
+          "type": "number",
+          "default": 3,
+          "min": 0,
+          "max": 16,
+          "step": 1,
+          "condition": "!style.is(\"Dot\") && !style.is(\"Circle\")"
+        },
+        {
+          "id": "Center Dot",
+          "variable": "centerDot",
+          "name": "Center Dot",
+          "type": "boolean",
+          "default": false,
+          "condition": "!style.is(\"Dot\") && !style.is(\"Cross Dot\")"
+        },
+        {
+          "id": "Dot Size",
+          "variable": "dotSize",
+          "name": "Dot Size",
+          "type": "number",
+          "default": 2,
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "condition": "style.is(\"Dot\") || style.is(\"Cross Dot\") || centerDot.isEnabled()"
+        },
+        {
+          "id": "Circle Radius",
+          "variable": "circleRadius",
+          "name": "Circle Radius",
+          "type": "number",
+          "default": 7,
+          "min": 2,
+          "max": 32,
+          "step": 1,
+          "condition": "style.is(\"Circle\")"
+        },
+        {
+          "id": "Circle Segments",
+          "variable": "circleSegments",
+          "name": "Circle Segments",
+          "type": "number",
+          "default": 32,
+          "min": 12,
+          "max": 96,
+          "step": 2,
+          "condition": "style.is(\"Circle\")"
+        },
+        {
+          "id": "Movement Gap",
+          "variable": "movementGap",
+          "name": "Movement Gap",
+          "type": "boolean",
+          "default": true,
+          "condition": "style.is(\"Dynamic\")"
+        },
+        {
+          "id": "Movement Gap Amount",
+          "variable": "movementGapAmount",
+          "name": "Movement Gap Amount",
+          "type": "number",
+          "default": 5,
+          "min": 0,
+          "max": 16,
+          "step": 0.5,
+          "condition": "style.is(\"Dynamic\") && movementGap.isEnabled()"
+        },
+        {
+          "id": "Rotate",
+          "variable": "rotate",
+          "name": "Rotate",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Rotation Speed",
+          "variable": "rotationSpeed",
+          "name": "Rotation Speed",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "condition": "rotate.isEnabled()"
+        },
+        {
+          "id": "Horizontal Offset",
+          "variable": "horizontalOffset",
+          "name": "Horizontal Offset",
+          "type": "number",
+          "default": 0,
+          "min": -80,
+          "max": 80,
+          "step": 1
+        },
+        {
+          "id": "Vertical Offset",
+          "variable": "verticalOffset",
+          "name": "Vertical Offset",
+          "type": "number",
+          "default": 0,
+          "min": -80,
+          "max": 80,
+          "step": 1
+        },
+        {
+          "id": "Outline",
+          "variable": "outline",
+          "name": "Outline",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Outline Color",
+          "variable": "outlineColor",
+          "name": "Outline Color",
+          "type": "color",
+          "default": "#000000",
+          "alpha": 192,
+          "condition": "outline.isEnabled()"
+        },
+        {
+          "id": "Outline Size",
+          "variable": "outlineSize",
+          "name": "Outline Size",
+          "type": "number",
+          "default": 1,
+          "min": 1,
+          "max": 3,
+          "step": 1,
+          "condition": "outline.isEnabled()"
+        },
+        {
+          "id": "Break Circle",
+          "variable": "breakCircle",
+          "name": "Break Circle",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Break Circle Radius",
+          "variable": "breakCircleRadius",
+          "name": "Break Circle Radius",
+          "type": "number",
+          "default": 12,
+          "min": 4,
+          "max": 40,
+          "step": 1,
+          "condition": "breakCircle.isEnabled()"
+        },
+        {
+          "id": "Break Circle Width",
+          "variable": "breakCircleWidth",
+          "name": "Break Circle Width",
+          "type": "number",
+          "default": 1.5,
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "condition": "breakCircle.isEnabled()"
+        },
+        {
+          "id": "Break Circle Color",
+          "variable": "breakCircleColor",
+          "name": "Break Circle Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255,
+          "condition": "breakCircle.isEnabled()"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/CustomCrosshairModule.java"
+    },
+    {
+      "id": "FogModule",
+      "name": "Fog",
+      "description": "Depth fog with blur, custom colors and animated rainbow",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Blur",
+          "variable": "blur",
+          "name": "Blur",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Blur Method",
+          "variable": "method",
+          "name": "Blur Method",
+          "type": "mode",
+          "default": "Kawase",
+          "options": [
+            "Kawase",
+            "Gaussian"
+          ],
+          "condition": "blur.isEnabled()"
+        },
+        {
+          "id": "Blur Strength",
+          "variable": "strength",
+          "name": "Blur Strength",
+          "type": "number",
+          "default": 6,
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "condition": "blur.isEnabled()"
+        },
+        {
+          "id": "Start Distance",
+          "variable": "start",
+          "name": "Start Distance",
+          "type": "number",
+          "default": 12,
+          "min": 0,
+          "max": 256,
+          "step": 1
+        },
+        {
+          "id": "End Distance",
+          "variable": "end",
+          "name": "End Distance",
+          "type": "number",
+          "default": 64,
+          "min": 1,
+          "max": 512,
+          "step": 1
+        },
+        {
+          "id": "Fog Opacity",
+          "variable": "opacity",
+          "name": "Fog Opacity",
+          "type": "number",
+          "default": 100,
+          "min": 0,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "id": "Color Mode",
+          "variable": "tint",
+          "name": "Color Mode",
+          "type": "mode",
+          "default": "Scene",
+          "options": [
+            "Scene",
+            "Custom",
+            "Rainbow"
+          ]
+        },
+        {
+          "id": "Fog Color",
+          "variable": "color",
+          "name": "Fog Color",
+          "type": "color",
+          "default": "#b8cbd6",
+          "alpha": 255,
+          "condition": "tint.is(\"Custom\")"
+        },
+        {
+          "id": "Color Opacity",
+          "variable": "tintOpacity",
+          "name": "Color Opacity",
+          "type": "number",
+          "default": 30,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "condition": "!tint.is(\"Scene\")"
+        },
+        {
+          "id": "Rainbow Saturation",
+          "variable": "saturation",
+          "name": "Rainbow Saturation",
+          "type": "number",
+          "default": 70,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "condition": "tint.is(\"Rainbow\")"
+        },
+        {
+          "id": "Rainbow Brightness",
+          "variable": "brightness",
+          "name": "Rainbow Brightness",
+          "type": "number",
+          "default": 100,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "condition": "tint.is(\"Rainbow\")"
+        },
+        {
+          "id": "Rainbow Speed",
+          "variable": "speed",
+          "name": "Rainbow Speed",
+          "type": "number",
+          "default": 1,
+          "min": 0,
+          "max": 5,
+          "step": 0.05,
+          "condition": "tint.is(\"Rainbow\")"
+        },
+        {
+          "id": "Affect Sky",
+          "variable": "sky",
+          "name": "Affect Sky",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Keep Vanilla Fog",
+          "variable": "vanilla",
+          "name": "Keep Vanilla Fog",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/FogModule.java"
+    },
+    {
+      "id": "MusicModule",
+      "name": "Music",
+      "description": "Media cover and title, internet radio and audio-reactive waves",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Media HUD",
+          "variable": "hud",
+          "name": "Media HUD",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "System Media",
+          "variable": "systemMedia",
+          "name": "System Media",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Player Priority",
+          "variable": "owners",
+          "name": "Player Priority",
+          "type": "string",
+          "default": "Spotify,Chrome,Firefox",
+          "maxLength": 160,
+          "condition": "systemMedia.isEnabled()"
+        },
+        {
+          "id": "HUD Width",
+          "variable": "hudWidth",
+          "name": "HUD Width",
+          "type": "number",
+          "default": 270,
+          "min": 180,
+          "max": 500,
+          "step": 5,
+          "condition": "hud.isEnabled()"
+        },
+        {
+          "id": "HUD Scale",
+          "variable": "hudScale",
+          "name": "HUD Scale",
+          "type": "number",
+          "default": 1,
+          "min": 0.5,
+          "max": 2,
+          "step": 0.05,
+          "condition": "hud.isEnabled()"
+        },
+        {
+          "id": "Cover Art",
+          "variable": "cover",
+          "name": "Cover Art",
+          "type": "boolean",
+          "default": true,
+          "condition": "hud.isEnabled()"
+        },
+        {
+          "id": "Blurred Cover Background",
+          "variable": "coverBackground",
+          "name": "Blurred Cover Background",
+          "type": "boolean",
+          "default": true,
+          "condition": "hud.isEnabled()"
+        },
+        {
+          "id": "Track Progress",
+          "variable": "progress",
+          "name": "Track Progress",
+          "type": "boolean",
+          "default": true,
+          "condition": "hud.isEnabled()"
+        },
+        {
+          "id": "Scroll Long Titles",
+          "variable": "scroll",
+          "name": "Scroll Long Titles",
+          "type": "boolean",
+          "default": true,
+          "condition": "hud.isEnabled()"
+        },
+        {
+          "id": "Hide When Idle",
+          "variable": "hideIdle",
+          "name": "Hide When Idle",
+          "type": "boolean",
+          "default": false,
+          "condition": "hud.isEnabled()"
+        },
+        {
+          "id": "HUD Background",
+          "variable": "background",
+          "name": "HUD Background",
+          "type": "color",
+          "default": "#1a202a",
+          "alpha": 197,
+          "condition": "hud.isEnabled()"
+        },
+        {
+          "id": "HUD Text",
+          "variable": "text",
+          "name": "HUD Text",
+          "type": "color",
+          "default": "#f5f7ff",
+          "alpha": 255,
+          "condition": "hud.isEnabled()"
+        },
+        {
+          "id": "HUD Accent",
+          "variable": "accent",
+          "name": "HUD Accent",
+          "type": "color",
+          "default": "#7de2ce",
+          "alpha": 255,
+          "condition": "hud.isEnabled()"
+        },
+        {
+          "id": "Radio",
+          "variable": "radio",
+          "name": "Radio",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Radio Station",
+          "variable": "station",
+          "name": "Radio Station",
+          "type": "mode",
+          "default": "Groove Salad",
+          "options": [
+            "Groove Salad",
+            "Drone Zone",
+            "Secret Agent",
+            "Custom"
+          ],
+          "condition": "radio.isEnabled()"
+        },
+        {
+          "id": "Radio URL",
+          "variable": "radioUrl",
+          "name": "Radio URL",
+          "type": "string",
+          "default": "",
+          "maxLength": 2048,
+          "condition": "radio.isEnabled() && station.is(\"Custom\")"
+        },
+        {
+          "id": "Radio Volume",
+          "variable": "volume",
+          "name": "Radio Volume",
+          "type": "number",
+          "default": 45,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "condition": "radio.isEnabled()"
+        },
+        {
+          "id": "Radio Reconnect",
+          "variable": "reconnect",
+          "name": "Radio Reconnect",
+          "type": "boolean",
+          "default": true,
+          "condition": "radio.isEnabled()"
+        },
+        {
+          "id": "Volume Display",
+          "variable": "visualizer",
+          "name": "Volume Display",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Audio Source",
+          "variable": "audioSource",
+          "name": "Audio Source",
+          "type": "mode",
+          "default": "Auto",
+          "options": [
+            "Auto",
+            "System",
+            "Radio"
+          ],
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Wave Style",
+          "variable": "style",
+          "name": "Wave Style",
+          "type": "mode",
+          "default": "Waves",
+          "options": [
+            "Waves",
+            "Bars",
+            "Line"
+          ],
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Wave Detail",
+          "variable": "bands",
+          "name": "Wave Detail",
+          "type": "number",
+          "default": 64,
+          "min": 16,
+          "max": 128,
+          "step": 4,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Wave Height",
+          "variable": "waveHeight",
+          "name": "Wave Height",
+          "type": "number",
+          "default": 90,
+          "min": 10,
+          "max": 300,
+          "step": 5,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Wave Width",
+          "variable": "waveWidth",
+          "name": "Wave Width",
+          "type": "number",
+          "default": 100,
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Bottom Offset",
+          "variable": "bottom",
+          "name": "Bottom Offset",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 220,
+          "step": 1,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Sensitivity",
+          "variable": "gain",
+          "name": "Sensitivity",
+          "type": "number",
+          "default": 2,
+          "min": 0.1,
+          "max": 12,
+          "step": 0.1,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Wave Smoothing",
+          "variable": "smoothing",
+          "name": "Wave Smoothing",
+          "type": "number",
+          "default": 70,
+          "min": 0,
+          "max": 95,
+          "step": 1,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Minimum Frequency",
+          "variable": "minHz",
+          "name": "Minimum Frequency",
+          "type": "number",
+          "default": 35,
+          "min": 20,
+          "max": 2000,
+          "step": 5,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Maximum Frequency",
+          "variable": "maxHz",
+          "name": "Maximum Frequency",
+          "type": "number",
+          "default": 16000,
+          "min": 2000,
+          "max": 22000,
+          "step": 100,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Wave Opacity",
+          "variable": "waveOpacity",
+          "name": "Wave Opacity",
+          "type": "number",
+          "default": 75,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Wave Line Width",
+          "variable": "lineWidth",
+          "name": "Wave Line Width",
+          "type": "number",
+          "default": 2,
+          "min": 1,
+          "max": 6,
+          "step": 0.5,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Bar Gap",
+          "variable": "gap",
+          "name": "Bar Gap",
+          "type": "number",
+          "default": 2,
+          "min": 0,
+          "max": 12,
+          "step": 0.5,
+          "condition": "visualizer.isEnabled() && style.is(\"Bars\")"
+        },
+        {
+          "id": "Wave Layers",
+          "variable": "layers",
+          "name": "Wave Layers",
+          "type": "number",
+          "default": 3,
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "condition": "visualizer.isEnabled() && style.is(\"Waves\")"
+        },
+        {
+          "id": "Mirror Spectrum",
+          "variable": "mirror",
+          "name": "Mirror Spectrum",
+          "type": "boolean",
+          "default": true,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Peak Markers",
+          "variable": "peaks",
+          "name": "Peak Markers",
+          "type": "boolean",
+          "default": true,
+          "condition": "visualizer.isEnabled() && style.is(\"Bars\")"
+        },
+        {
+          "id": "Wave Color Mode",
+          "variable": "waveColor",
+          "name": "Wave Color Mode",
+          "type": "mode",
+          "default": "Gradient",
+          "options": [
+            "Gradient",
+            "Solid",
+            "Rainbow"
+          ],
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Wave Color",
+          "variable": "first",
+          "name": "Wave Color",
+          "type": "color",
+          "default": "#69dedc",
+          "alpha": 255,
+          "condition": "visualizer.isEnabled()"
+        },
+        {
+          "id": "Wave Second Color",
+          "variable": "second",
+          "name": "Wave Second Color",
+          "type": "color",
+          "default": "#9a75ed",
+          "alpha": 255,
+          "condition": "visualizer.isEnabled() && waveColor.is(\"Gradient\")"
+        },
+        {
+          "id": "Wave Rainbow Speed",
+          "variable": "rainbowSpeed",
+          "name": "Wave Rainbow Speed",
+          "type": "number",
+          "default": 1,
+          "min": 0,
+          "max": 5,
+          "step": 0.05,
+          "condition": "visualizer.isEnabled() && waveColor.is(\"Rainbow\")"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/MusicModule.java"
+    },
+    {
+      "id": "AnimationsModule",
+      "name": "Animations",
+      "description": "Customize first-person sword blocking",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Blocking Style",
+          "variable": "blockingStyle",
+          "name": "Blocking Style",
+          "type": "mode",
+          "default": "Vanilla",
+          "options": [
+            "Vanilla",
+            "Slide",
+            "Reverse",
+            "Reverse Spin",
+            "Spin",
+            "Orbit"
+          ]
+        },
+        {
+          "id": "Items",
+          "variable": "itemTypes",
+          "name": "Items",
+          "type": "multiselect",
+          "options": [
+            "Swords",
+            "Bow",
+            "Consumables",
+            "Food",
+            "Potions",
+            "Other"
+          ],
+          "default": [
+            "Swords"
+          ]
+        },
+        {
+          "id": "Animation Speed",
+          "variable": "animationSpeed",
+          "name": "Animation Speed",
+          "type": "number",
+          "default": 1,
+          "min": 0.1,
+          "max": 4,
+          "step": 0.1,
+          "condition": "!blockingStyle.is(\"Vanilla\")"
+        },
+        {
+          "id": "Rotation",
+          "variable": "rotation",
+          "name": "Rotation",
+          "type": "number",
+          "default": 35,
+          "min": 0,
+          "max": 180,
+          "step": 1,
+          "condition": "!blockingStyle.is(\"Vanilla\")"
+        },
+        {
+          "id": "X Offset",
+          "variable": "offsetX",
+          "name": "X Offset",
+          "type": "number",
+          "default": 0,
+          "min": -1,
+          "max": 1,
+          "step": 0.01,
+          "condition": "!blockingStyle.is(\"Vanilla\")"
+        },
+        {
+          "id": "Y Offset",
+          "variable": "offsetY",
+          "name": "Y Offset",
+          "type": "number",
+          "default": 0,
+          "min": -1,
+          "max": 1,
+          "step": 0.01,
+          "condition": "!blockingStyle.is(\"Vanilla\")"
+        },
+        {
+          "id": "Z Offset",
+          "variable": "offsetZ",
+          "name": "Z Offset",
+          "type": "number",
+          "default": 0,
+          "min": -1,
+          "max": 1,
+          "step": 0.01,
+          "condition": "!blockingStyle.is(\"Vanilla\")"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/AnimationsModule.java"
+    },
+    {
+      "id": "AmbienceModule",
+      "name": "Ambience",
+      "description": "Customize local time and weather",
+      "category": "VISUAL",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Time Mode",
+          "variable": "timeMode",
+          "name": "Time Mode",
+          "type": "mode",
+          "default": "Custom",
+          "options": [
+            "Custom",
+            "None",
+            "Normal",
+            "Dawn",
+            "Day",
+            "Noon",
+            "Dusk",
+            "Night",
+            "Midnight",
+            "Dynamic"
+          ]
+        },
+        {
+          "id": "Time",
+          "variable": "customTime",
+          "name": "Time",
+          "type": "number",
+          "default": 6,
+          "min": 0,
+          "max": 24,
+          "step": 1,
+          "condition": "timeMode.is(\"Custom\")"
+        },
+        {
+          "id": "Time Speed",
+          "variable": "normalSpeed",
+          "name": "Time Speed",
+          "type": "number",
+          "default": 150,
+          "min": 10,
+          "max": 500,
+          "step": 1,
+          "condition": "timeMode.is(\"Normal\")"
+        },
+        {
+          "id": "Dynamic Speed",
+          "variable": "dynamicSpeed",
+          "name": "Dynamic Speed",
+          "type": "number",
+          "default": 20,
+          "min": 1,
+          "max": 50,
+          "step": 1,
+          "condition": "timeMode.is(\"Dynamic\")"
+        },
+        {
+          "id": "Weather Mode",
+          "variable": "weatherMode",
+          "name": "Weather Mode",
+          "type": "mode",
+          "default": "None",
+          "options": [
+            "None",
+            "Sun",
+            "Rain",
+            "Thunder"
+          ]
+        },
+        {
+          "id": "Weather Strength",
+          "variable": "weatherStrength",
+          "name": "Weather Strength",
+          "type": "number",
+          "default": 1,
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "condition": "!weatherMode.is(\"None\")"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/AmbienceModule.java"
+    },
+    {
+      "id": "TargetsModule",
+      "name": "Targets",
+      "description": "Choose which entities combat and ESP use",
+      "category": "COMBAT",
+      "key": "NONE",
+      "enabled": true,
+      "settings": [
+        {
+          "id": "Players",
+          "variable": "players",
+          "name": "Players",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Mobs",
+          "variable": "mobs",
+          "name": "Mobs",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Animals",
+          "variable": "animals",
+          "name": "Animals",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Invisibles",
+          "variable": "invisibles",
+          "name": "Invisibles",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Ignore Teammates",
+          "variable": "ignoreTeammates",
+          "name": "Ignore Teammates",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Teammate Detection",
+          "variable": "teammateDetection",
+          "name": "Teammate Detection",
+          "type": "mode",
+          "default": "Scoreboard",
+          "options": [
+            "Scoreboard",
+            "Name Color",
+            "Chestplate"
+          ],
+          "condition": "ignoreTeammates.isEnabled()"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/TargetsModule.java"
+    },
+    {
+      "id": "AimAssistModule",
+      "name": "AimAssist",
+      "description": "Smoothly aims at the best Vibe target",
+      "category": "COMBAT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Mode",
+          "variable": "mode",
+          "name": "Mode",
+          "type": "mode",
+          "default": "Simple",
+          "options": [
+            "Simple",
+            "Adaptive"
+          ]
+        },
+        {
+          "id": "Require Mouse Down",
+          "variable": "requireMouseDown",
+          "name": "Require Mouse Down",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Aim Vertically",
+          "variable": "aimVertically",
+          "name": "Aim Vertically",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Strafe Increase",
+          "variable": "strafeIncrease",
+          "name": "Strafe Increase",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Check Block Break",
+          "variable": "checkBlockBreak",
+          "name": "Check Block Break",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Break Blocks Whitelist",
+          "variable": "breakBlocksWhitelist",
+          "name": "Break Blocks Whitelist",
+          "type": "boolean",
+          "default": false,
+          "condition": "checkBlockBreak.isEnabled()"
+        },
+        {
+          "id": "Break Block Items",
+          "variable": "breakBlockItems",
+          "name": "Break Block Items",
+          "type": "multiselect",
+          "options": [
+            "Pickaxes",
+            "Shovels",
+            "Axes"
+          ],
+          "default": [
+            "Pickaxes",
+            "Shovels"
+          ],
+          "condition": "checkBlockBreak.isEnabled() && breakBlocksWhitelist.isEnabled()"
+        },
+        {
+          "id": "Limit To Items",
+          "variable": "limitToItems",
+          "name": "Limit To Items",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Allowed Items",
+          "variable": "allowedItems",
+          "name": "Allowed Items",
+          "type": "multiselect",
+          "options": [
+            "Swords",
+            "Axes",
+            "Tools",
+            "Bows"
+          ],
+          "default": [
+            "Swords"
+          ],
+          "condition": "limitToItems.isEnabled()"
+        },
+        {
+          "id": "Vertical Speed",
+          "variable": "verticalSpeed",
+          "name": "Vertical Speed",
+          "type": "number",
+          "default": 5,
+          "min": 1,
+          "max": 10,
+          "step": 0.1,
+          "condition": "aimVertically.isEnabled()"
+        },
+        {
+          "id": "Horizontal Speed",
+          "variable": "horizontalSpeed",
+          "name": "Horizontal Speed",
+          "type": "number",
+          "default": 5,
+          "min": 1,
+          "max": 10,
+          "step": 0.1
+        },
+        {
+          "id": "Max Angle",
+          "variable": "maxAngle",
+          "name": "Max Angle",
+          "type": "number",
+          "default": 180,
+          "min": 1,
+          "max": 360,
+          "step": 1
+        },
+        {
+          "id": "Yaw Deadzone",
+          "variable": "yawDeadzone",
+          "name": "Yaw Deadzone",
+          "type": "number",
+          "default": 0.35,
+          "min": 0,
+          "max": 12,
+          "step": 0.05
+        },
+        {
+          "id": "Pitch Deadzone",
+          "variable": "pitchDeadzone",
+          "name": "Pitch Deadzone",
+          "type": "number",
+          "default": 0.25,
+          "min": 0,
+          "max": 12,
+          "step": 0.05,
+          "condition": "aimVertically.isEnabled()"
+        },
+        {
+          "id": "Distance",
+          "variable": "distance",
+          "name": "Distance",
+          "type": "number",
+          "default": 5,
+          "min": 1,
+          "max": 8,
+          "step": 0.1
+        },
+        {
+          "id": "Through Walls",
+          "variable": "throughWalls",
+          "name": "Through Walls",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Target Area",
+          "variable": "targetArea",
+          "name": "Target Area",
+          "type": "mode",
+          "default": "Center",
+          "options": [
+            "Center",
+            "Closest"
+          ]
+        },
+        {
+          "id": "Target Mode",
+          "variable": "targetMode",
+          "name": "Target Mode",
+          "type": "mode",
+          "default": "Yaw",
+          "options": [
+            "Yaw",
+            "Distance",
+            "Armor",
+            "Threat",
+            "Health"
+          ]
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/AimAssistModule.java"
+    },
+    {
+      "id": "BacktrackModule",
+      "name": "Backtrack",
+      "description": "Safely buffers target movement updates",
+      "category": "COMBAT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Mode",
+          "variable": "mode",
+          "name": "Mode",
+          "type": "mode",
+          "default": "Modern",
+          "options": [
+            "Modern",
+            "Legacy"
+          ]
+        },
+        {
+          "id": "Latency (ms)",
+          "variable": "latency",
+          "name": "Latency (ms)",
+          "type": "range",
+          "default": [
+            50,
+            100
+          ],
+          "min": 0,
+          "max": 500,
+          "step": 1
+        },
+        {
+          "id": "Tracking Time (ms)",
+          "variable": "trackingTime",
+          "name": "Tracking Time (ms)",
+          "type": "number",
+          "default": 950,
+          "min": 100,
+          "max": 2500,
+          "step": 25
+        },
+        {
+          "id": "Safe Server Distance",
+          "variable": "safeDistance",
+          "name": "Safe Server Distance",
+          "type": "number",
+          "default": 2.85,
+          "min": 1,
+          "max": 3,
+          "step": 0.05,
+          "condition": "mode.is(\"Modern\")"
+        },
+        {
+          "id": "Pause On Hurt",
+          "variable": "pauseOnHurt",
+          "name": "Pause On Hurt",
+          "type": "boolean",
+          "default": true,
+          "condition": "mode.is(\"Modern\")"
+        },
+        {
+          "id": "Render Server Position",
+          "variable": "renderServerPosition",
+          "name": "Render Server Position",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Server Position Color",
+          "variable": "renderColor",
+          "name": "Server Position Color",
+          "type": "color",
+          "default": "#058669",
+          "alpha": 100,
+          "condition": "renderServerPosition.isEnabled()"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/BacktrackModule.java"
+    },
+    {
+      "id": "WTapModule",
+      "name": "W-Tab",
+      "description": "Release and re-press forward after a selected hit",
+      "category": "COMBAT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Chance",
+          "variable": "chance",
+          "name": "Chance",
+          "type": "number",
+          "default": 90,
+          "min": 0,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "id": "Release Delay (ms)",
+          "variable": "releaseDelay",
+          "name": "Release Delay (ms)",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 500,
+          "step": 1
+        },
+        {
+          "id": "Re-press Delay (ms)",
+          "variable": "rePressDelay",
+          "name": "Re-press Delay (ms)",
+          "type": "number",
+          "default": 50,
+          "min": 0,
+          "max": 500,
+          "step": 1
+        },
+        {
+          "id": "Select Hits",
+          "variable": "selectHits",
+          "name": "Select Hits",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Players Only",
+          "variable": "playersOnly",
+          "name": "Players Only",
+          "type": "boolean",
+          "default": true
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/WTapModule.java"
+    },
+    {
+      "id": "ReachModule",
+      "name": "Reach",
+      "description": "Adjust the client mouse-over reach for entities and blocks",
+      "category": "COMBAT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Reach Extension",
+          "variable": "reachExtension",
+          "name": "Reach Extension",
+          "type": "range",
+          "default": [
+            0.2,
+            0.2
+          ],
+          "min": 0,
+          "max": 3,
+          "step": 0.05
+        },
+        {
+          "id": "Block Reach Extension",
+          "variable": "blockReachExtension",
+          "name": "Block Reach Extension",
+          "type": "range",
+          "default": [
+            0,
+            0
+          ],
+          "min": 0,
+          "max": 3,
+          "step": 0.05
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/ReachModule.java"
+    },
+    {
+      "id": "VelocityModule",
+      "name": "Velocity",
+      "description": "Reduce received knockback",
+      "category": "COMBAT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Modes",
+          "variable": "modes",
+          "name": "Modes",
+          "type": "multiselect",
+          "options": [
+            "Normal",
+            "Jump"
+          ],
+          "default": [
+            "Normal"
+          ]
+        },
+        {
+          "id": "Horizontal",
+          "variable": "horizontal",
+          "name": "Horizontal",
+          "type": "number",
+          "default": 90,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "condition": "modes.isSelected(\"Normal\")"
+        },
+        {
+          "id": "Vertical",
+          "variable": "vertical",
+          "name": "Vertical",
+          "type": "number",
+          "default": 100,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "condition": "modes.isSelected(\"Normal\")"
+        },
+        {
+          "id": "Jump Chance",
+          "variable": "chance",
+          "name": "Jump Chance",
+          "type": "number",
+          "default": 100,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "condition": "modes.isSelected(\"Jump\")"
+        },
+        {
+          "id": "Jump Delay",
+          "variable": "delay",
+          "name": "Jump Delay",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "condition": "modes.isSelected(\"Jump\")"
+        },
+        {
+          "id": "Position Threshold (ms)",
+          "variable": "positionThreshold",
+          "name": "Position Threshold (ms)",
+          "type": "number",
+          "default": 100,
+          "min": 0,
+          "max": 1000,
+          "step": 10
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/VelocityModule.java"
+    },
+    {
+      "id": "AutoClickerModule",
+      "name": "LeftClicker",
+      "description": "Assist held left-click attacks",
+      "category": "COMBAT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "CPS Range",
+          "variable": "cps",
+          "name": "CPS Range",
+          "type": "range",
+          "default": [
+            6,
+            13
+          ],
+          "min": 1,
+          "max": 20,
+          "step": 0.1
+        },
+        {
+          "id": "Hold To Click",
+          "variable": "requireHold",
+          "name": "Hold To Click",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Trigger Mode",
+          "variable": "triggerMode",
+          "name": "Trigger Mode",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Limit Items",
+          "variable": "limitItems",
+          "name": "Limit Items",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Item Whitelist",
+          "variable": "itemWhitelist",
+          "name": "Item Whitelist",
+          "type": "multiselect",
+          "options": [
+            "Swords",
+            "Axes",
+            "Pickaxes",
+            "Shovels",
+            "Hoes"
+          ],
+          "default": [
+            "Swords"
+          ],
+          "condition": "limitItems.isEnabled()"
+        },
+        {
+          "id": "Break Blocks",
+          "variable": "breakBlocks",
+          "name": "Break Blocks",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Break Blocks Delay",
+          "variable": "breakBlocksDelay",
+          "name": "Break Blocks Delay",
+          "type": "range",
+          "default": [
+            0,
+            10
+          ],
+          "min": 0,
+          "max": 2000,
+          "step": 1,
+          "condition": "breakBlocks.isEnabled()"
+        },
+        {
+          "id": "Break Blocks Item Filter",
+          "variable": "breakBlocksWhitelist",
+          "name": "Break Blocks Item Filter",
+          "type": "boolean",
+          "default": false,
+          "condition": "breakBlocks.isEnabled()"
+        },
+        {
+          "id": "Break Blocks Items",
+          "variable": "blockBreakItems",
+          "name": "Break Blocks Items",
+          "type": "multiselect",
+          "options": [
+            "Pickaxes",
+            "Shovels",
+            "Axes"
+          ],
+          "default": [
+            "Pickaxes",
+            "Shovels"
+          ],
+          "condition": "breakBlocks.isEnabled() && breakBlocksWhitelist.isEnabled()"
+        },
+        {
+          "id": "Randomize CPS",
+          "variable": "randomize",
+          "name": "Randomize CPS",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Randomization",
+          "variable": "randomization",
+          "name": "Randomization",
+          "type": "mode",
+          "default": "Extra",
+          "options": [
+            "Extra",
+            "Normal",
+            "Extra+"
+          ],
+          "condition": "randomize.isEnabled()"
+        },
+        {
+          "id": "Jitter",
+          "variable": "jitter",
+          "name": "Jitter",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Jitter Amount",
+          "variable": "jitterAmount",
+          "name": "Jitter Amount",
+          "type": "number",
+          "default": 0.45,
+          "min": 0.05,
+          "max": 2,
+          "step": 0.05,
+          "condition": "jitter.isEnabled()"
+        },
+        {
+          "id": "Force First Hit",
+          "variable": "forceFirstHit",
+          "name": "Force First Hit",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/AutoClickerModule.java"
+    },
+    {
+      "id": "SprintModule",
+      "name": "Sprint",
+      "description": "Sprint while moving forward",
+      "category": "MOVEMENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/SprintModule.java"
+    },
+    {
+      "id": "NoSlowModule",
+      "name": "NoSlow",
+      "description": "Preserve movement while using selected items",
+      "category": "MOVEMENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Mode",
+          "variable": "mode",
+          "name": "Mode",
+          "type": "mode",
+          "default": "Vanilla",
+          "options": [
+            "Vanilla"
+          ]
+        },
+        {
+          "id": "Items",
+          "variable": "items",
+          "name": "Items",
+          "type": "multiselect",
+          "options": [
+            "Swords",
+            "Bow",
+            "Consumables",
+            "Food",
+            "Potions",
+            "Other"
+          ],
+          "default": [
+            "Swords",
+            "Bow",
+            "Consumables",
+            "Food",
+            "Potions"
+          ]
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/NoSlowModule.java"
+    },
+    {
+      "id": "MoveFixModule",
+      "name": "MoveFix",
+      "description": "Corrects movement for fake server rotations",
+      "category": "MOVEMENT",
+      "key": "NONE",
+      "enabled": true,
+      "settings": [
+        {
+          "id": "Correct Movement",
+          "variable": "correctMovement",
+          "name": "Correct Movement",
+          "type": "mode",
+          "default": "Off",
+          "options": [
+            "Off",
+            "Prevent Backwards Sprinting",
+            "Direct",
+            "Silent"
+          ]
+        },
+        {
+          "id": "Adjust Third Person Model",
+          "variable": "adjustThirdPersonModel",
+          "name": "Adjust Third Person Model",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Raycast",
+          "variable": "raycast",
+          "name": "Raycast",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Rotate Back Speed",
+          "variable": "rotateBackSpeed",
+          "name": "Rotate Back Speed",
+          "type": "range",
+          "default": [
+            8,
+            14
+          ],
+          "min": 0,
+          "max": 180,
+          "step": 0.25
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/MoveFixModule.java"
+    },
+    {
+      "id": "TestModule",
+      "name": "Test",
+      "description": "Tests MoveFix with a fake server rotation",
+      "category": "MOVEMENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Yaw",
+          "variable": "yaw",
+          "name": "Yaw",
+          "type": "number",
+          "default": 0,
+          "min": -180,
+          "max": 180,
+          "step": 1
+        },
+        {
+          "id": "Pitch",
+          "variable": "pitch",
+          "name": "Pitch",
+          "type": "number",
+          "default": 0,
+          "min": -90,
+          "max": 90,
+          "step": 1
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/TestModule.java"
+    },
+    {
+      "id": "KillAuraModule",
+      "name": "Killaura",
+      "description": "Automatically aims, clicks and sword-blocks using vanilla input",
+      "category": "COMBAT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Reach",
+          "variable": "reach",
+          "name": "Reach",
+          "type": "range",
+          "default": [
+            3,
+            3
+          ],
+          "min": 3,
+          "max": 6.5,
+          "step": 0.05
+        },
+        {
+          "id": "Autoblock Mode",
+          "variable": "autoblock",
+          "name": "Autoblock Mode",
+          "type": "mode",
+          "default": "None",
+          "options": [
+            "None",
+            "Vanilla",
+            "Fake",
+            "Legit"
+          ]
+        },
+        {
+          "id": "Only When Rightclicking",
+          "variable": "onlyRightClick",
+          "name": "Only When Rightclicking",
+          "type": "boolean",
+          "default": false,
+          "condition": "realBlockMode()"
+        },
+        {
+          "id": "Blocking Range",
+          "variable": "blockingRange",
+          "name": "Blocking Range",
+          "type": "number",
+          "default": 3,
+          "min": 1,
+          "max": 7,
+          "step": 0.1,
+          "condition": "!autoblock.is(\"None\")"
+        },
+        {
+          "id": "Yaw Aimpoint",
+          "variable": "yawAimpoint",
+          "name": "Yaw Aimpoint",
+          "type": "mode",
+          "default": "Center",
+          "options": [
+            "Center",
+            "Closest"
+          ]
+        },
+        {
+          "id": "Pitch Aimpoint",
+          "variable": "pitchAimpoint",
+          "name": "Pitch Aimpoint",
+          "type": "mode",
+          "default": "Center",
+          "options": [
+            "Center",
+            "Closest"
+          ]
+        },
+        {
+          "id": "Rotation Mode",
+          "variable": "rotationMode",
+          "name": "Rotation Mode",
+          "type": "mode",
+          "default": "Normal",
+          "options": [
+            "Normal",
+            "Acceleration"
+          ]
+        },
+        {
+          "id": "Rotation Speed",
+          "variable": "rotationSpeed",
+          "name": "Rotation Speed",
+          "type": "range",
+          "default": [
+            25,
+            40
+          ],
+          "min": 1,
+          "max": 180,
+          "step": 0.5,
+          "condition": "rotationMode.is(\"Normal\")"
+        },
+        {
+          "id": "Rotation Acceleration",
+          "variable": "rotationAcceleration",
+          "name": "Rotation Acceleration",
+          "type": "range",
+          "default": [
+            2,
+            5
+          ],
+          "min": 0.25,
+          "max": 40,
+          "step": 0.25,
+          "condition": "rotationMode.is(\"Acceleration\")"
+        },
+        {
+          "id": "Clicking Range",
+          "variable": "clickingRange",
+          "name": "Clicking Range",
+          "type": "number",
+          "default": 3,
+          "min": 2.5,
+          "max": 7,
+          "step": 0.1
+        },
+        {
+          "id": "Clicking Mode",
+          "variable": "clickingMode",
+          "name": "Clicking Mode",
+          "type": "mode",
+          "default": "Normal",
+          "options": [
+            "Normal",
+            "Drag Clicking",
+            "Butterfly"
+          ]
+        },
+        {
+          "id": "Normal CPS",
+          "variable": "normalCps",
+          "name": "Normal CPS",
+          "type": "range",
+          "default": [
+            8,
+            12
+          ],
+          "min": 1,
+          "max": 20,
+          "step": 0.1,
+          "condition": "clickingMode.is(\"Normal\")"
+        },
+        {
+          "id": "Drag CPS",
+          "variable": "dragCps",
+          "name": "Drag CPS",
+          "type": "range",
+          "default": [
+            25,
+            40
+          ],
+          "min": 5,
+          "max": 60,
+          "step": 0.5,
+          "condition": "clickingMode.is(\"Drag Clicking\")"
+        },
+        {
+          "id": "Drag Duration (ms)",
+          "variable": "dragDuration",
+          "name": "Drag Duration (ms)",
+          "type": "range",
+          "default": [
+            120,
+            350
+          ],
+          "min": 50,
+          "max": 1000,
+          "step": 10,
+          "condition": "clickingMode.is(\"Drag Clicking\")"
+        },
+        {
+          "id": "Drag Pause (ms)",
+          "variable": "dragPause",
+          "name": "Drag Pause (ms)",
+          "type": "range",
+          "default": [
+            150,
+            400
+          ],
+          "min": 50,
+          "max": 1500,
+          "step": 10,
+          "condition": "clickingMode.is(\"Drag Clicking\")"
+        },
+        {
+          "id": "Butterfly CPS",
+          "variable": "butterflyCps",
+          "name": "Butterfly CPS",
+          "type": "range",
+          "default": [
+            12,
+            18
+          ],
+          "min": 1,
+          "max": 40,
+          "step": 0.1,
+          "condition": "clickingMode.is(\"Butterfly\")"
+        },
+        {
+          "id": "Not When BlockBreaking",
+          "variable": "notBlockBreaking",
+          "name": "Not When BlockBreaking",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Aim Through Walls",
+          "variable": "aimThroughWalls",
+          "name": "Aim Through Walls",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Piercing",
+          "variable": "piercing",
+          "name": "Piercing",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Not In Inv",
+          "variable": "notInInv",
+          "name": "Not In Inv",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Target Mode",
+          "variable": "targetMode",
+          "name": "Target Mode",
+          "type": "mode",
+          "default": "Health",
+          "options": [
+            "Health",
+            "Armor",
+            "Yaw",
+            "Distance"
+          ]
+        },
+        {
+          "id": "Max Angle",
+          "variable": "maxAngle",
+          "name": "Max Angle",
+          "type": "number",
+          "default": 180,
+          "min": 0,
+          "max": 180,
+          "step": 1
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/KillAuraModule.java"
+    },
+    {
+      "id": "BHopModule",
+      "name": "BHop",
+      "description": "Automatically jump while moving",
+      "category": "MOVEMENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Mode",
+          "variable": "mode",
+          "name": "Mode",
+          "type": "mode",
+          "default": "Legit",
+          "options": [
+            "Legit",
+            "Custom",
+            "GroundStrafe"
+          ]
+        },
+        {
+          "id": "Speed",
+          "variable": "speed",
+          "name": "Speed",
+          "type": "number",
+          "default": 0.32,
+          "min": 0.1,
+          "max": 0.8,
+          "step": 0.01,
+          "condition": "mode.is(\"Custom\")"
+        },
+        {
+          "id": "Jump Height",
+          "variable": "jumpHeight",
+          "name": "Jump Height",
+          "type": "number",
+          "default": 0.42,
+          "min": 0.1,
+          "max": 0.8,
+          "step": 0.01,
+          "condition": "mode.is(\"Custom\")"
+        },
+        {
+          "id": "Only Moving",
+          "variable": "onlyMoving",
+          "name": "Only Moving",
+          "type": "boolean",
+          "default": true,
+          "condition": "mode.is(\"Custom\")"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/BHopModule.java"
+    },
+    {
+      "id": "FlyModule",
+      "name": "Fly",
+      "description": "Simple client flight",
+      "category": "MOVEMENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Mode",
+          "variable": "mode",
+          "name": "Mode",
+          "type": "mode",
+          "default": "Basic",
+          "options": [
+            "Basic",
+            "GroundSpoof"
+          ]
+        },
+        {
+          "id": "Horizontal Speed",
+          "variable": "horizontalSpeed",
+          "name": "Horizontal Speed",
+          "type": "number",
+          "default": 0.8,
+          "min": 0.1,
+          "max": 3,
+          "step": 0.1
+        },
+        {
+          "id": "Vertical Speed",
+          "variable": "verticalSpeed",
+          "name": "Vertical Speed",
+          "type": "number",
+          "default": 0.35,
+          "min": 0.1,
+          "max": 2,
+          "step": 0.05
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/FlyModule.java"
+    },
+    {
+      "id": "BlurModule",
+      "name": "Blur",
+      "description": "Globally control Vibe blur surfaces",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Blur Elements",
+          "variable": "elements",
+          "name": "Blur Elements",
+          "type": "multiselect",
+          "options": [
+            "arraylist",
+            "watermark",
+            "coordinates",
+            "scoreboard",
+            "clock",
+            "sessioninfo",
+            "motiongraph",
+            "stalker",
+            "armor",
+            "inventory",
+            "health",
+            "cps",
+            "cpsgraph",
+            "clickgui",
+            "inventoryeditor",
+            "friendeditor",
+            "configeditor",
+            "keybindeditor",
+            "espeditor",
+            "nesemulator",
+            "cosmeticseditor",
+            "scriptseditor",
+            "gta7",
+            "memegames"
+          ],
+          "default": [
+            "arraylist",
+            "watermark",
+            "coordinates",
+            "scoreboard",
+            "clock",
+            "sessioninfo",
+            "motiongraph",
+            "stalker",
+            "armor",
+            "inventory",
+            "cpsgraph",
+            "clickgui",
+            "inventoryeditor",
+            "friendeditor",
+            "configeditor",
+            "keybindeditor",
+            "espeditor",
+            "nesemulator",
+            "cosmeticseditor",
+            "scriptseditor",
+            "gta7",
+            "memegames"
+          ]
+        },
+        {
+          "id": "Strength",
+          "variable": "strength",
+          "name": "Strength",
+          "type": "number",
+          "default": 4,
+          "min": 1,
+          "max": 8,
+          "step": 1
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/BlurModule.java"
+    },
+    {
+      "id": "WaifuModule",
+      "name": "Waifu",
+      "description": "Show a custom image in the ClickGUI",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Scale",
+          "variable": "scale",
+          "name": "Scale",
+          "type": "number",
+          "default": 0.35,
+          "min": 0.05,
+          "max": 1,
+          "step": 0.05
+        },
+        {
+          "id": "Open Folder",
+          "variable": "openFolder",
+          "name": "Open Folder",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Gravity",
+          "variable": "gravity",
+          "name": "Gravity",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Show In",
+          "variable": "guiTargets",
+          "name": "Show In",
+          "type": "multiselect",
+          "options": [
+            "ClickGUI",
+            "Inventory",
+            "Inventory Editor",
+            "Friend Editor",
+            "GTA7",
+            "Meme Games",
+            "Chest",
+            "Escape",
+            "Anvil",
+            "Dropper",
+            "Thrower",
+            "Other"
+          ],
+          "default": [
+            "ClickGUI",
+            "Inventory",
+            "Chest",
+            "Escape",
+            "Anvil",
+            "Dropper",
+            "Thrower"
+          ]
+        },
+        {
+          "id": "Waifu",
+          "variable": "selected",
+          "name": "Waifu",
+          "type": "mode",
+          "default": "None",
+          "options": [
+            "None"
+          ],
+          "dynamic": true,
+          "note": "Additional choices are loaded from your local client files."
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/WaifuModule.java"
+    },
+    {
+      "id": "NesEmulatorModule",
+      "name": "NES Emulator",
+      "description": "Play local .nes ROM files in a Vibe GUI",
+      "category": "MEME",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Region",
+          "variable": "region",
+          "name": "Region",
+          "type": "mode",
+          "default": "NTSC",
+          "options": [
+            "NTSC",
+            "PAL"
+          ]
+        },
+        {
+          "id": "Scale",
+          "variable": "scale",
+          "name": "Scale",
+          "type": "number",
+          "default": 2,
+          "min": 1,
+          "max": 3,
+          "step": 1
+        },
+        {
+          "id": "Open Folder",
+          "variable": "openFolder",
+          "name": "Open Folder",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "ROM",
+          "variable": "rom",
+          "name": "ROM",
+          "type": "mode",
+          "default": "None",
+          "options": [
+            "None"
+          ],
+          "dynamic": true,
+          "note": "Additional choices are loaded from your local client files."
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/NesEmulatorModule.java"
+    },
+    {
+      "id": "Gta7Module",
+      "name": "GTA7",
+      "description": "A 3D first-person city with police, traffic and permanent upgrades",
+      "category": "MEME",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/Gta7Module.java"
+    },
+    {
+      "id": "GirlfriendModule",
+      "name": "Girlfriend",
+      "description": "Play local reactions to player actions",
+      "category": "MEME",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/GirlfriendModule.java"
+    },
+    {
+      "id": "ChessModule",
+      "name": "Chess",
+      "description": "Play a complete chess match through Minecraft chat",
+      "category": "MEME",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/ChessModule.java"
+    },
+    {
+      "id": "TicTacToeModule",
+      "name": "Tic Tac Toe",
+      "description": "Challenge a player or robot through Minecraft chat",
+      "category": "MEME",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/TicTacToeModule.java"
+    },
+    {
+      "id": "FourWinsModule",
+      "name": "4 Wins",
+      "description": "Challenge a player or robot in a four-in-a-row match",
+      "category": "MEME",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/FourWinsModule.java"
+    },
+    {
+      "id": "SlotsModule",
+      "name": "Slots",
+      "description": "Adult-only virtual arcade with local encrypted Vibe Tokens",
+      "category": "MEME",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/SlotsModule.java"
+    },
+    {
+      "id": "ParticlesModule",
+      "name": "Particles",
+      "description": "Interactive ambient particles in selected GUIs",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Show In",
+          "variable": "guiTargets",
+          "name": "Show In",
+          "type": "multiselect",
+          "options": [
+            "ClickGUI",
+            "Inventory",
+            "Inventory Editor",
+            "Friend Editor",
+            "Config Editor",
+            "Keybind Editor",
+            "ESP Editor",
+            "NES Emulator",
+            "Cosmetics Editor",
+            "GTA7",
+            "Meme Games",
+            "Chest",
+            "Escape",
+            "Anvil",
+            "Dropper",
+            "Thrower",
+            "Other"
+          ],
+          "default": [
+            "ClickGUI"
+          ]
+        },
+        {
+          "id": "Modes",
+          "variable": "modes",
+          "name": "Modes",
+          "type": "multiselect",
+          "options": [
+            "Dots",
+            "Stars",
+            "Balls",
+            "Hearts",
+            "Cross",
+            "Snowflake"
+          ],
+          "default": [
+            "Dots"
+          ]
+        },
+        {
+          "id": "Count",
+          "variable": "count",
+          "name": "Count",
+          "type": "number",
+          "default": 52,
+          "min": 8,
+          "max": 500,
+          "step": 1
+        },
+        {
+          "id": "Speed",
+          "variable": "speed",
+          "name": "Speed",
+          "type": "number",
+          "default": 1.35,
+          "min": 0.1,
+          "max": 8,
+          "step": 0.05
+        },
+        {
+          "id": "Mouse Force",
+          "variable": "interaction",
+          "name": "Mouse Force",
+          "type": "number",
+          "default": 3,
+          "min": 0.1,
+          "max": 16,
+          "step": 0.05
+        },
+        {
+          "id": "Primary Color",
+          "variable": "primary",
+          "name": "Primary Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 216
+        },
+        {
+          "id": "Secondary Color",
+          "variable": "secondary",
+          "name": "Secondary Color",
+          "type": "color",
+          "default": "#a855f7",
+          "alpha": 216
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/ParticlesModule.java"
+    },
+    {
+      "id": "DebugModule",
+      "name": "Debug",
+      "description": "Print selected module diagnostics in local chat",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Modes",
+          "variable": "modes",
+          "name": "Modes",
+          "type": "multiselect",
+          "options": [
+            "Wtap",
+            "FirstHit",
+            "Hit on Backtrack",
+            "Performed FakeLag"
+          ],
+          "default": [
+            "Wtap",
+            "FirstHit"
+          ]
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/DebugModule.java"
+    },
+    {
+      "id": "LanguageModule",
+      "name": "Language",
+      "description": "Choose Vibe's interface language",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": true,
+      "settings": [
+        {
+          "id": "Language",
+          "variable": "language",
+          "name": "Language",
+          "type": "mode",
+          "default": "English",
+          "options": [
+            "English",
+            "Chinese",
+            "Russian",
+            "Japanese",
+            "Bavarian"
+          ]
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/LanguageModule.java"
+    },
+    {
+      "id": "QolModule",
+      "name": "QOL",
+      "description": "Client-side quality-of-life presentation",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Features",
+          "variable": "features",
+          "name": "Features",
+          "type": "multiselect",
+          "options": [
+            "Hide Black Background",
+            "AntiInvisibility"
+          ],
+          "default": [
+            "Hide Black Background"
+          ]
+        },
+        {
+          "id": "Hide In",
+          "variable": "guiTargets",
+          "name": "Hide In",
+          "type": "multiselect",
+          "options": [
+            "Inventory",
+            "ESC",
+            "Other Vanilla GUIs"
+          ],
+          "default": [
+            "Inventory",
+            "ESC",
+            "Other Vanilla GUIs"
+          ],
+          "condition": "features.isSelected(\"Hide Black Background\")"
+        },
+        {
+          "id": "Invisible Alpha",
+          "variable": "invisibleAlpha",
+          "name": "Invisible Alpha",
+          "type": "number",
+          "default": 125,
+          "min": 0,
+          "max": 255,
+          "step": 1,
+          "condition": "features.isSelected(\"AntiInvisibility\")"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/QolModule.java"
+    },
+    {
+      "id": "NoJumpDelayModule",
+      "name": "NoJumpDelay",
+      "description": "Removes the vanilla jump delay",
+      "category": "MOVEMENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/NoJumpDelayModule.java"
+    },
+    {
+      "id": "EagleModule",
+      "name": "Eagle",
+      "description": "Sneak at unsupported block edges",
+      "category": "MOVEMENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "GodBridge SafeWalk",
+          "variable": "godBridge",
+          "name": "GodBridge SafeWalk",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Block End Distance",
+          "variable": "edgeDistance",
+          "name": "Block End Distance",
+          "type": "number",
+          "default": 0.18,
+          "min": 0.02,
+          "max": 0.8,
+          "step": 0.01
+        },
+        {
+          "id": "Holding Blocks",
+          "variable": "holdingBlocks",
+          "name": "Holding Blocks",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Walking Backwards",
+          "variable": "allowBackwards",
+          "name": "Walking Backwards",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Look Down Pitch",
+          "variable": "lookDownPitch",
+          "name": "Look Down Pitch",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 90,
+          "step": 1
+        },
+        {
+          "id": "Only When Not Sneaking",
+          "variable": "onlyNotSneaking",
+          "name": "Only When Not Sneaking",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Require Sneak",
+          "variable": "requireSneak",
+          "name": "Require Sneak",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Randomize Unsneak",
+          "variable": "randomize",
+          "name": "Randomize Unsneak",
+          "type": "boolean",
+          "default": true,
+          "condition": "!godBridge.isEnabled()"
+        },
+        {
+          "id": "Unsneak Range",
+          "variable": "unsneakRange",
+          "name": "Unsneak Range",
+          "type": "range",
+          "default": [
+            100,
+            200
+          ],
+          "min": 0,
+          "max": 500,
+          "step": 5,
+          "condition": "!godBridge.isEnabled() && randomize.isEnabled()"
+        },
+        {
+          "id": "Unsneak Delay",
+          "variable": "unsneakDelay",
+          "name": "Unsneak Delay",
+          "type": "number",
+          "default": 100,
+          "min": 0,
+          "max": 500,
+          "step": 5,
+          "condition": "!godBridge.isEnabled() && !randomize.isEnabled()"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/EagleModule.java"
+    },
+    {
+      "id": "FastPlaceModule",
+      "name": "FastPlace",
+      "description": "Tune local block placement delay",
+      "category": "WORLD",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Start Delay (ms)",
+          "variable": "startDelay",
+          "name": "Start Delay (ms)",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 1000,
+          "step": 10
+        },
+        {
+          "id": "Place Delay (ms)",
+          "variable": "placeDelay",
+          "name": "Place Delay (ms)",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 500,
+          "step": 5
+        },
+        {
+          "id": "Randomize Delays",
+          "variable": "randomize",
+          "name": "Randomize Delays",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Random Delay (ms)",
+          "variable": "randomDelay",
+          "name": "Random Delay (ms)",
+          "type": "range",
+          "default": [
+            0,
+            100
+          ],
+          "min": 0,
+          "max": 500,
+          "step": 5,
+          "condition": "randomize.isEnabled()"
+        },
+        {
+          "id": "Blocks Only",
+          "variable": "blockOnly",
+          "name": "Blocks Only",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Blacklist",
+          "variable": "blacklist",
+          "name": "Blacklist",
+          "type": "multiselect",
+          "options": [
+            "minecraft:chest",
+            "minecraft:ender_chest",
+            "minecraft:crafting_table",
+            "minecraft:anvil",
+            "minecraft:obsidian",
+            "minecraft:tnt"
+          ],
+          "default": [
+            "minecraft:obsidian"
+          ]
+        },
+        {
+          "id": "Blacklist IDs",
+          "variable": "blacklistIds",
+          "name": "Blacklist IDs",
+          "type": "string",
+          "default": "",
+          "maxLength": 180
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/FastPlaceModule.java"
+    },
+    {
+      "id": "FakeLagModule",
+      "name": "FakeLag",
+      "description": "Queues movement packets while preserving action order",
+      "category": "WORLD",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Mode",
+          "variable": "mode",
+          "name": "Mode",
+          "type": "mode",
+          "default": "Latency",
+          "options": [
+            "Latency",
+            "Repel"
+          ]
+        },
+        {
+          "id": "Delay (ms)",
+          "variable": "delay",
+          "name": "Delay (ms)",
+          "type": "number",
+          "default": 100,
+          "min": 1,
+          "max": 1000,
+          "step": 1
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/FakeLagModule.java"
+    },
+    {
+      "id": "InventoryManagerModule",
+      "name": "Inventory Manager",
+      "description": "Sort tools, armour and supplies into the Inventory Editor layout",
+      "category": "WORLD",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Mode",
+          "variable": "mode",
+          "name": "Mode",
+          "type": "mode",
+          "default": "OpenInv",
+          "options": [
+            "OpenInv",
+            "Vanilla"
+          ]
+        },
+        {
+          "id": "Start Delay (ms)",
+          "variable": "startDelay",
+          "name": "Start Delay (ms)",
+          "type": "range",
+          "default": [
+            160,
+            320
+          ],
+          "min": 0,
+          "max": 2500,
+          "step": 10
+        },
+        {
+          "id": "Sort Delay (ms)",
+          "variable": "delay",
+          "name": "Sort Delay (ms)",
+          "type": "range",
+          "default": [
+            80,
+            150
+          ],
+          "min": 0,
+          "max": 1500,
+          "step": 5
+        },
+        {
+          "id": "Drop Duplicates",
+          "variable": "dropDuplicates",
+          "name": "Drop Duplicates",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Max Food Slots",
+          "variable": "maxFoodSlots",
+          "name": "Max Food Slots",
+          "type": "number",
+          "default": 8,
+          "min": 0,
+          "max": 36,
+          "step": 1
+        },
+        {
+          "id": "Max Block Slots",
+          "variable": "maxBlockSlots",
+          "name": "Max Block Slots",
+          "type": "number",
+          "default": 18,
+          "min": 0,
+          "max": 36,
+          "step": 1
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/InventoryManagerModule.java"
+    },
+    {
+      "id": "ChestStealerModule",
+      "name": "ChestStealer",
+      "description": "Loot useful chest items with Default or cursor-based timing",
+      "category": "WORLD",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Mode",
+          "variable": "mode",
+          "name": "Mode",
+          "type": "mode",
+          "default": "Default",
+          "options": [
+            "Default",
+            "Advanced"
+          ]
+        },
+        {
+          "id": "Start Delay (ms)",
+          "variable": "startDelay",
+          "name": "Start Delay (ms)",
+          "type": "range",
+          "default": [
+            100,
+            220
+          ],
+          "min": 0,
+          "max": 2500,
+          "step": 10
+        },
+        {
+          "id": "Steal Delay (ms)",
+          "variable": "stealDelay",
+          "name": "Steal Delay (ms)",
+          "type": "range",
+          "default": [
+            70,
+            125
+          ],
+          "min": 0,
+          "max": 1500,
+          "step": 5,
+          "condition": "mode.is(\"Default\")"
+        },
+        {
+          "id": "Auto Close",
+          "variable": "autoClose",
+          "name": "Auto Close",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Close Delay (ms)",
+          "variable": "closeDelay",
+          "name": "Close Delay (ms)",
+          "type": "range",
+          "default": [
+            120,
+            260
+          ],
+          "min": 0,
+          "max": 2500,
+          "step": 10,
+          "condition": "autoClose.isEnabled()"
+        },
+        {
+          "id": "Selection",
+          "variable": "selection",
+          "name": "Selection",
+          "type": "mode",
+          "default": "Random",
+          "options": [
+            "Random",
+            "Left To Right"
+          ],
+          "condition": "mode.is(\"Default\")"
+        },
+        {
+          "id": "Cursor Speed",
+          "variable": "advancedSpeed",
+          "name": "Cursor Speed",
+          "type": "range",
+          "default": [
+            175,
+            260
+          ],
+          "min": 25,
+          "max": 900,
+          "step": 5,
+          "condition": "mode.is(\"Advanced\")"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/ChestStealerModule.java"
+    },
+    {
+      "id": "AutoToolModule",
+      "name": "AutoTool",
+      "description": "Select the best hotbar tool for the current vanilla action",
+      "category": "WORLD",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Types",
+          "variable": "types",
+          "name": "Types",
+          "type": "multiselect",
+          "options": [
+            "Weapon",
+            "Tools"
+          ],
+          "default": [
+            "Weapon",
+            "Tools"
+          ]
+        },
+        {
+          "id": "Mode",
+          "variable": "mode",
+          "name": "Mode",
+          "type": "mode",
+          "default": "Basic",
+          "options": [
+            "Basic",
+            "Silent"
+          ]
+        },
+        {
+          "id": "Start Delay (ms)",
+          "variable": "startDelay",
+          "name": "Start Delay (ms)",
+          "type": "range",
+          "default": [
+            40,
+            95
+          ],
+          "min": 0,
+          "max": 1000,
+          "step": 5
+        },
+        {
+          "id": "Switch Back",
+          "variable": "switchBack",
+          "name": "Switch Back",
+          "type": "boolean",
+          "default": true,
+          "condition": "mode.is(\"Basic\")"
+        },
+        {
+          "id": "Switch Back Delay (ms)",
+          "variable": "switchBackDelay",
+          "name": "Switch Back Delay (ms)",
+          "type": "range",
+          "default": [
+            80,
+            160
+          ],
+          "min": 0,
+          "max": 2000,
+          "step": 5,
+          "condition": "mode.is(\"Silent\") || switchBack.isEnabled()"
+        },
+        {
+          "id": "Silent Slot Color",
+          "variable": "silentColor",
+          "name": "Silent Slot Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255,
+          "condition": "mode.is(\"Silent\")"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/AutoToolModule.java"
+    },
+    {
+      "id": "BedAuraModule",
+      "name": "BedAura",
+      "description": "Automatically mines the nearest visible bed",
+      "category": "WORLD",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Range",
+          "variable": "range",
+          "name": "Range",
+          "type": "number",
+          "default": 5,
+          "min": 2,
+          "max": 8,
+          "step": 0.1
+        },
+        {
+          "id": "FOV",
+          "variable": "fov",
+          "name": "FOV",
+          "type": "number",
+          "default": 180,
+          "min": 30,
+          "max": 360,
+          "step": 1
+        },
+        {
+          "id": "Scan Rate (ms)",
+          "variable": "scanRate",
+          "name": "Scan Rate (ms)",
+          "type": "number",
+          "default": 250,
+          "min": 50,
+          "max": 2000,
+          "step": 25
+        },
+        {
+          "id": "Switch Back",
+          "variable": "switchBack",
+          "name": "Switch Back",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Render Target",
+          "variable": "renderTarget",
+          "name": "Render Target",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Target Color",
+          "variable": "targetColor",
+          "name": "Target Color",
+          "type": "color",
+          "default": "#ff4f6d",
+          "alpha": 120,
+          "condition": "renderTarget.isEnabled()"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/BedAuraModule.java"
+    },
+    {
+      "id": "ScaffoldModule",
+      "name": "Scaffold",
+      "description": "Places blocks beneath the player while walking",
+      "category": "WORLD",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Select Mode",
+          "variable": "selectMode",
+          "name": "Select Mode",
+          "type": "mode",
+          "default": "Basic",
+          "options": [
+            "Basic",
+            "Silent"
+          ]
+        },
+        {
+          "id": "Silent Slot Color",
+          "variable": "silentColor",
+          "name": "Silent Slot Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255,
+          "condition": "selectMode.is(\"Silent\")"
+        },
+        {
+          "id": "Sneak Mode",
+          "variable": "sneakMode",
+          "name": "Sneak Mode",
+          "type": "mode",
+          "default": "None",
+          "options": [
+            "None",
+            "Safewalk",
+            "Eagle"
+          ]
+        },
+        {
+          "id": "Place Range",
+          "variable": "placeRange",
+          "name": "Place Range",
+          "type": "number",
+          "default": 4.5,
+          "min": 2,
+          "max": 6,
+          "step": 0.1
+        },
+        {
+          "id": "Place Delay (ms)",
+          "variable": "placeDelay",
+          "name": "Place Delay (ms)",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 500,
+          "step": 5
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/ScaffoldModule.java"
+    },
+    {
+      "id": "FastBreakModule",
+      "name": "FastBreak",
+      "description": "Tune the normal block-damage controller",
+      "category": "WORLD",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Mode",
+          "variable": "mode",
+          "name": "Mode",
+          "type": "mode",
+          "default": "Speed",
+          "options": [
+            "Speed",
+            "FinishFaster"
+          ]
+        },
+        {
+          "id": "Speed Multiplier",
+          "variable": "speed",
+          "name": "Speed Multiplier",
+          "type": "number",
+          "default": 1.65,
+          "min": 1,
+          "max": 4,
+          "step": 0.05,
+          "condition": "mode.is(\"Speed\")"
+        },
+        {
+          "id": "Finish At (%)",
+          "variable": "finishAt",
+          "name": "Finish At (%)",
+          "type": "number",
+          "default": 82,
+          "min": 10,
+          "max": 99,
+          "step": 1,
+          "condition": "mode.is(\"FinishFaster\")"
+        },
+        {
+          "id": "Only With Tools",
+          "variable": "onlyWithTools",
+          "name": "Only With Tools",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Not On",
+          "variable": "excluded",
+          "name": "Not On",
+          "type": "multiselect",
+          "options": [
+            "Obsidian",
+            "Woods",
+            "Stones",
+            "Bed"
+          ],
+          "default": [
+            "Obsidian"
+          ]
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/FastBreakModule.java"
+    },
+    {
+      "id": "FriendsModule",
+      "name": "Friends",
+      "description": "Keep saved friends out of combat",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": true,
+      "settings": [
+        {
+          "id": "Deathmatch",
+          "variable": "deathmatch",
+          "name": "Deathmatch",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/FriendsModule.java"
+    },
+    {
+      "id": "HudModule",
+      "name": "HUD",
+      "description": "Customizable Vibe HUD",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": true,
+      "settings": [
+        {
+          "id": "Mode",
+          "variable": "mode",
+          "name": "Mode",
+          "type": "mode",
+          "default": "Vibe",
+          "options": [
+            "Vibe",
+            "Skeet"
+          ]
+        },
+        {
+          "id": "HUD Elements",
+          "variable": "hudElements",
+          "name": "HUD Elements",
+          "type": "multiselect",
+          "options": [
+            "watermark",
+            "arraylist",
+            "coordinates",
+            "scoreboard",
+            "clock",
+            "sessioninfo",
+            "motiongraph",
+            "stalker",
+            "armor",
+            "inventory",
+            "health",
+            "cps",
+            "cpsgraph"
+          ],
+          "default": [
+            "watermark",
+            "arraylist",
+            "coordinates",
+            "scoreboard"
+          ]
+        },
+        {
+          "id": "Replace Scoreboard Server",
+          "variable": "replaceScoreboardServer",
+          "name": "Replace Scoreboard Server",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "Watermark Details",
+          "variable": "watermarkDetails",
+          "name": "Watermark Details",
+          "type": "multiselect",
+          "options": [
+            "Version",
+            "FPS",
+            "Username"
+          ],
+          "default": [
+            "Version",
+            "FPS"
+          ]
+        },
+        {
+          "id": "Watermark Text",
+          "variable": "watermarkText",
+          "name": "Watermark Text",
+          "type": "string",
+          "default": "VIBE",
+          "maxLength": 24
+        },
+        {
+          "id": "Array Style",
+          "variable": "arrayStyle",
+          "name": "Array Style",
+          "type": "mode",
+          "default": "Cards",
+          "options": [
+            "Cards",
+            "Compact",
+            "Minimal"
+          ]
+        },
+        {
+          "id": "ArrayList Modules",
+          "variable": "arrayListModules",
+          "name": "ArrayList Modules",
+          "type": "multiselect",
+          "options": [
+            "ESP",
+            "TargetESP",
+            "Hitmarker",
+            "Skeletal",
+            "Cosmetics",
+            "ChestESP",
+            "FullBright",
+            "FOV Changer",
+            "CustomCrosshair",
+            "Animations",
+            "Targets",
+            "AimAssist",
+            "Velocity",
+            "BHop",
+            "Fly",
+            "LeftClicker",
+            "Sprint",
+            "NoJumpDelay",
+            "NoSlow",
+            "Eagle",
+            "FastPlace",
+            "HUD Editor",
+            "HUD",
+            "NameProtect",
+            "ClickGUI",
+            "Blur",
+            "Waifu",
+            "Particles",
+            "QOL",
+            "ESP Editor",
+            "ItemESP",
+            "Cosmetics Editor",
+            "BedESP",
+            "BlockChangeESP",
+            "BlockOverlay",
+            "Cute Visuals",
+            "Trajectories",
+            "Fog",
+            "Music",
+            "Ambience",
+            "Backtrack",
+            "W-Tab",
+            "Reach",
+            "MoveFix",
+            "Test",
+            "Killaura",
+            "NES Emulator",
+            "GTA7",
+            "Girlfriend",
+            "Chess",
+            "Tic Tac Toe",
+            "4 Wins",
+            "Slots",
+            "Debug",
+            "Language",
+            "FakeLag",
+            "Inventory Manager",
+            "ChestStealer",
+            "AutoTool",
+            "BedAura",
+            "Scaffold",
+            "FastBreak",
+            "Friends",
+            "Inventory Editor",
+            "Friend Editor",
+            "Config Editor",
+            "Keybind Editor",
+            "Scripts"
+          ],
+          "default": [
+            "ESP",
+            "TargetESP",
+            "Hitmarker",
+            "Skeletal",
+            "Cosmetics",
+            "ChestESP",
+            "FullBright",
+            "FOV Changer",
+            "CustomCrosshair",
+            "Animations",
+            "AimAssist",
+            "Velocity",
+            "BHop",
+            "Fly",
+            "LeftClicker",
+            "Sprint",
+            "NoJumpDelay",
+            "NoSlow",
+            "Eagle",
+            "FastPlace",
+            "HUD Editor",
+            "NameProtect",
+            "ClickGUI",
+            "ESP Editor",
+            "ItemESP",
+            "Cosmetics Editor",
+            "BedESP",
+            "BlockChangeESP",
+            "BlockOverlay",
+            "Cute Visuals",
+            "Trajectories",
+            "Fog",
+            "Music",
+            "Ambience",
+            "Backtrack",
+            "W-Tab",
+            "Reach",
+            "MoveFix",
+            "Test",
+            "Killaura",
+            "NES Emulator",
+            "GTA7",
+            "Girlfriend",
+            "Chess",
+            "Tic Tac Toe",
+            "4 Wins",
+            "Slots",
+            "Debug",
+            "Language",
+            "FakeLag",
+            "Inventory Manager",
+            "ChestStealer",
+            "AutoTool",
+            "BedAura",
+            "Scaffold",
+            "FastBreak",
+            "Friends",
+            "Inventory Editor",
+            "Friend Editor",
+            "Config Editor",
+            "Keybind Editor",
+            "Scripts"
+          ]
+        },
+        {
+          "id": "ArrayList Outline",
+          "variable": "arrayOutline",
+          "name": "ArrayList Outline",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Watermark Outline",
+          "variable": "watermarkOutline",
+          "name": "Watermark Outline",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Coordinates Outline",
+          "variable": "coordinatesOutline",
+          "name": "Coordinates Outline",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Armor Display",
+          "variable": "armorDisplayMode",
+          "name": "Armor Display",
+          "type": "mode",
+          "default": "Horizontal",
+          "options": [
+            "Horizontal",
+            "Vertical"
+          ]
+        },
+        {
+          "id": "Health Max Color",
+          "variable": "healthMaximumColor",
+          "name": "Health Max Color",
+          "type": "color",
+          "default": "#5be8a6",
+          "alpha": 255
+        },
+        {
+          "id": "Health Min Color",
+          "variable": "healthMinimumColor",
+          "name": "Health Min Color",
+          "type": "color",
+          "default": "#ff5b6e",
+          "alpha": 255
+        },
+        {
+          "id": "Health Absorption",
+          "variable": "healthAbsorption",
+          "name": "Health Absorption",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Absorption Color",
+          "variable": "healthAbsorptionColor",
+          "name": "Absorption Color",
+          "type": "color",
+          "default": "#ffc857",
+          "alpha": 255,
+          "condition": "healthAbsorption.isEnabled()"
+        },
+        {
+          "id": "Hide Health When Full",
+          "variable": "healthHideFull",
+          "name": "Hide Health When Full",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "ArrayList Primary Color",
+          "variable": "arrayPrimaryColor",
+          "name": "ArrayList Primary Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255
+        },
+        {
+          "id": "ArrayList Secondary Color",
+          "variable": "arraySecondaryColor",
+          "name": "ArrayList Secondary Color",
+          "type": "color",
+          "default": "#a855f7",
+          "alpha": 255
+        },
+        {
+          "id": "Accent",
+          "variable": "accent",
+          "name": "Accent",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255
+        },
+        {
+          "id": "Array Background",
+          "variable": "background",
+          "name": "Array Background",
+          "type": "color",
+          "default": "#141e34",
+          "alpha": 217
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/HudModule.java"
+    },
+    {
+      "id": "HudEditorModule",
+      "name": "HUD Editor",
+      "description": "Move watermark and module list",
+      "category": "CLIENT",
+      "key": "H",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/HudEditorModule.java"
+    },
+    {
+      "id": "NameProtectModule",
+      "name": "NameProtect",
+      "description": "Show your Vibe gamertag instead of the account name",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": true,
+      "settings": [
+        {
+          "id": "Name Color",
+          "variable": "nameColor",
+          "name": "Name Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/NameProtectModule.java"
+    },
+    {
+      "id": "InventoryEditorModule",
+      "name": "Inventory Editor",
+      "description": "Arrange preferred inventory slots and the drop bin",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Layout Data",
+          "variable": "layoutData",
+          "name": "Layout Data",
+          "type": "string",
+          "default": "",
+          "maxLength": 4096,
+          "condition": "false"
+        },
+        {
+          "id": "Draw Position",
+          "variable": "drawPosition",
+          "name": "Draw Position",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "Position Color",
+          "variable": "positionColor",
+          "name": "Position Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255,
+          "condition": "drawPosition.isEnabled()"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/InventoryEditorModule.java"
+    },
+    {
+      "id": "FriendEditorModule",
+      "name": "Friend Editor",
+      "description": "Edit friends and view live equipment",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/FriendEditorModule.java"
+    },
+    {
+      "id": "ConfigEditorModule",
+      "name": "Config Editor",
+      "description": "Create, load and manage Vibe JSON profiles",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/ConfigEditorModule.java"
+    },
+    {
+      "id": "KeybindEditorModule",
+      "name": "Keybind Editor",
+      "description": "Assign module keys using the current keyboard layout",
+      "category": "CLIENT",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/KeybindEditorModule.java"
+    },
+    {
+      "id": "ScriptsModule",
+      "name": "Scripts",
+      "description": "Create, load and manage Raven BS compatible scripts",
+      "category": "SCRIPTS",
+      "key": "NONE",
+      "enabled": false,
+      "settings": [],
+      "source": "src/main/java/dev/vibe/module/impl/ScriptsModule.java"
+    },
+    {
+      "id": "ClickGuiModule",
+      "name": "ClickGUI",
+      "description": "Open the Vibe module manager",
+      "category": "CLIENT",
+      "key": "RSHIFT",
+      "enabled": false,
+      "settings": [
+        {
+          "id": "Theme",
+          "variable": "theme",
+          "name": "Theme",
+          "type": "mode",
+          "default": "Skeet",
+          "options": [
+            "Skeet",
+            "Futuristic",
+            "NeverLose",
+            "Sigma",
+            "Augustus",
+            "Xanax"
+          ]
+        },
+        {
+          "id": "Primary Color",
+          "variable": "primaryColor",
+          "name": "Primary Color",
+          "type": "color",
+          "default": "#2de2c2",
+          "alpha": 255
+        },
+        {
+          "id": "Secondary Color",
+          "variable": "secondaryColor",
+          "name": "Secondary Color",
+          "type": "color",
+          "default": "#a855f7",
+          "alpha": 255
+        },
+        {
+          "id": "Rounded Corners",
+          "variable": "augustusRoundedCorners",
+          "name": "Rounded Corners",
+          "type": "boolean",
+          "default": true,
+          "condition": "theme.is(\"Augustus\")"
+        },
+        {
+          "id": "Background Alpha",
+          "variable": "augustusBackgroundAlpha",
+          "name": "Background Alpha",
+          "type": "number",
+          "default": 200,
+          "min": 0,
+          "max": 255,
+          "step": 1,
+          "condition": "theme.is(\"Augustus\")"
+        }
+      ],
+      "source": "src/main/java/dev/vibe/module/impl/ClickGuiModule.java"
+    }
+  ],
+  "settingCount": 487
+}

@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0d0b" />
+    <meta
+      name="description"
+      content="Your game. Your rules. Explore Vibe, an open-source Minecraft Forge 1.8.9 client. Try the interactive Skeet ClickGUI, discover every module, and find your theme."
+    />
+    <title>Vibe Client — Find your edge.</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/updates.css" />
+    <link
+      rel="preload"
+      href="assets/fonts/vibe-minecraft.otf"
+      as="font"
+      type="font/otf"
+      crossorigin
+    />
+    <script type="module" src="js/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <svg
+      class="icon-definitions"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <defs>
+        <symbol id="i-arrow" viewBox="0 0 24 24">
+          <path d="M5 12h14m-6-6 6 6-6 6" />
+        </symbol>
+        <symbol id="i-external" viewBox="0 0 24 24">
+          <path d="M7 17 17 7M7 7h10v10" />
+        </symbol>
+        <symbol id="i-download" viewBox="0 0 24 24">
+          <path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5" />
+        </symbol>
+        <symbol id="i-code" viewBox="0 0 24 24">
+          <path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-14-2 18" />
+        </symbol>
+        <symbol id="i-combat" viewBox="0 0 24 24">
+          <path
+            d="m5 3 15 15-3 3L3 6V3h2Zm14 0L5 17m-3-2 7 7m8-13 4-4V3h-2M15 20l6-6"
+          />
+        </symbol>
+        <symbol id="i-visual" viewBox="0 0 24 24">
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z" />
+          <circle cx="12" cy="12" r="3" />
+        </symbol>
+        <symbol id="i-movement" viewBox="0 0 24 24">
+          <path d="m13 8-4 5 5 2-3 6m-2-8-3 7m7-12 3 4h5M3 7h5M2 11h3" />
+          <circle cx="15" cy="4" r="2" />
+        </symbol>
+        <symbol id="i-world" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18M12 3c-5 5-5 13 0 18 5-5 5-13 0-18Z" />
+        </symbol>
+        <symbol id="i-meme" viewBox="0 0 24 24">
+          <path
+            d="M8 6h8c4 0 6 12 4 13-2 1-4-3-5-3H9c-1 0-3 4-5 3C2 18 4 6 8 6Z M8 9v5m-2-2h4m6-2h.01m2 3h.01"
+          />
+        </symbol>
+        <symbol id="i-client" viewBox="0 0 24 24">
+          <path d="M4 7h16M4 17h16M8 3v8m8 2v8" />
+          <circle cx="8" cy="7" r="2" />
+          <circle cx="16" cy="17" r="2" />
+        </symbol>
+        <symbol id="i-scripts" viewBox="0 0 24 24">
+          <path d="m5 6 6 6-6 6m8 0h6" />
+        </symbol>
+        <symbol id="i-search" viewBox="0 0 24 24">
+          <circle cx="10.5" cy="10.5" r="6.5" />
+          <path d="m16 16 5 5" />
+        </symbol>
+        <symbol id="i-check" viewBox="0 0 24 24">
+          <path d="m5 12 4 4L19 6" />
+        </symbol>
+        <symbol id="i-close" viewBox="0 0 24 24">
+          <path d="m6 6 12 12M6 18 18 6" />
+        </symbol>
+        <symbol id="i-palette" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 3c8 8-8 10 0 18" />
+          <circle cx="7" cy="9" r="1" />
+          <circle cx="17" cy="14" r="1" />
+        </symbol>
+        <symbol id="i-box" viewBox="0 0 24 24">
+          <path d="m12 3 9 5v9l-9 5-9-5V8l9-5Zm0 10 9-5M3 8l9 5v9M7 5l10 6" />
+        </symbol>
+        <symbol id="i-star" viewBox="0 0 24 24">
+          <path
+            d="m12 3 2.8 5.8 6.4.9-4.6 4.5 1.1 6.3-5.7-3-5.7 3 1.1-6.3-4.6-4.5 6.4-.9L12 3Z"
+          />
+        </symbol>
+        <symbol id="i-reset" viewBox="0 0 24 24">
+          <path d="M3 11a9 9 0 1 1 2 7M3 4v7h7" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="#" class="brand" aria-label="Vibe home"
+          ><img src="assets/logo.png" alt="" width="34" height="34" /><span
+            >vibe<span class="brand-dot">.</span></span
+          ><span class="brand-client">CLIENT</span></a
+        >
+        <nav class="desktop-nav" aria-label="Main navigation">
+          <a href="#features">Overview</a
+          ><a href="#playground"
+            >Playground <span class="nav-label">LIVE</span></a
+          ><a href="#showcase">Showcase</a><a href="#reviews">Reviews</a>
+        </nav>
+        <div class="nav-actions">
+          <button
+            class="theme-trigger"
+            data-open-themes
+            aria-label="Choose website color theme"
+          >
+            <span class="theme-dot"></span
+            ><span class="current-theme-name">Acid</span
+            ><span class="chevron">⌄</span></button
+          ><a class="button button-small button-primary" href="#download"
+            >Get Vibe <svg class="icon"><use href="#i-download" /></svg></a
+          ><button
+            class="mobile-menu-button icon-button"
+            aria-label="Open navigation"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+          >
+            ☰
+          </button>
+        </div>
+      </div>
+      <nav
+        id="mobile-nav"
+        class="mobile-nav"
+        aria-label="Mobile navigation"
+        hidden
+      >
+        <a href="#features">Overview</a><a href="#playground">Playground</a
+        ><a href="#showcase">Showcase</a><a href="#reviews">Reviews</a
+        ><a href="#download">Download</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero container" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow hero-eyebrow">
+            <span class="status-dot"></span> BUILT FOR MINECRAFT 1.8.9
+            <span class="subtle">/ FORGE</span>
+          </div>
+          <h1 id="hero-title">
+            Your game.<br />Your rules.<br /><span class="accent"
+              >Your vibe.</span
+            >
+          </h1>
+          <div class="motto-terminal">
+            <div class="motto-terminal-top">
+              <span><i class="status-dot"></i> VIBE TRANSMISSION</span
+              ><span id="motto-count">01 / 07</span>
+            </div>
+            <div class="motto-line" aria-hidden="true">
+              <span class="motto-prompt">&gt;_</span
+              ><span id="typed-motto">Start vibeing now</span
+              ><span class="typing-caret"></span>
+            </div>
+            <span class="sr-only"
+              >Start vibeing now. Don't worry, Astra will take care of your
+              problems. Get good get Vibe. Welcome to Vibe. Why Vape when
+              Vibe. Don't make any mistakes. no mistakes allowed.</span
+            >
+          </div>
+          <p class="hero-description">
+            A different kind of client. Powerful modules, a completely
+            customizable experience, and an interface that feels like you.
+          </p>
+          <div class="hero-actions">
+            <a href="#download" class="button button-primary"
+              >Download Vibe
+              <svg class="icon"><use href="#i-download" /></svg></a
+            ><a href="#playground" class="button button-secondary"
+              >Try the playground <svg class="icon"><use href="#i-arrow" /></svg
+            ></a>
+          </div>
+          <div class="hero-meta">
+            <span
+              ><svg class="icon"><use href="#i-check" /></svg> Free & open
+              source</span
+            ><span
+              ><svg class="icon"><use href="#i-check" /></svg> Made for
+              Forge</span
+            ><span class="version-tag">v<span data-version>0.0.5</span></span>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Preview of the Vibe Skeet interface">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <span class="orbital-point point-one"></span
+          ><span class="orbital-point point-two"></span>
+          <div class="art-coordinate coordinate-top">
+            VIBE_SYS // INTERFACE_01
+          </div>
+          <div
+            class="hero-window"
+            id="hero-skeet"
+            aria-label="Interactive Vibe Skeet preview"
+          ></div>
+          <a href="#playground" class="floating-card"
+            ><span class="floating-icon"
+              ><svg class="icon"><use href="#i-client" /></svg></span
+            ><span
+              >Built around you.<small
+                >Every setting. Every possibility.</small
+              ></span
+            ><svg class="icon"><use href="#i-external" /></svg
+          ></a>
+          <div class="art-coordinate coordinate-bottom">
+            <span class="cross">+</span> FIND YOUR EDGE.
+            <span class="line"></span> 01 / 07
+          </div>
+        </div>
+      </section>
+
+      <div class="stats-strip">
+        <div class="container stats-grid">
+          <div>
+            <strong data-module-count>68</strong><span>MODULES TO EXPLORE</span>
+          </div>
+          <div>
+            <strong>49<span class="accent">.</span></strong
+            ><span>WEBSITE COLOR THEMES</span>
+          </div>
+          <div><strong>1.8.9</strong><span>THE VERSION YOU LOVE</span></div>
+          <div>
+            <strong>100<span class="accent">%</span></strong
+            ><span>FREE & OPEN SOURCE</span>
+          </div>
+        </div>
+      </div>
+
+      <section id="features" class="section container features-section">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">
+              <span class="section-number">01 /</span> THE VIBE DIFFERENCE
+            </div>
+            <h2>
+              Everything you need.<br /><span class="muted"
+                >Nothing holding you back.</span
+              >
+            </h2>
+          </div>
+          <p>
+            From the first click to the finest detail.<br />A client that puts
+            you in control.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg class="icon"><use href="#i-combat" /></svg>
+            </div>
+            <span class="card-index">01</span>
+            <h3>Find your edge.</h3>
+            <p>
+              Explore combat, movement, world, and visual modules. Fine-tune the
+              details to fit your playstyle.
+            </p>
+            <a href="#playground"
+              >Explore the modules
+              <svg class="icon"><use href="#i-arrow" /></svg
+            ></a>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg class="icon"><use href="#i-palette" /></svg>
+            </div>
+            <span class="card-index">02</span>
+            <h3>Unmistakably yours.</h3>
+            <p>
+              Distinct ClickGUI styles, a customizable HUD, and cosmetics. Make
+              every part of Vibe your own.
+            </p>
+            <a href="#showcase"
+              >See it in action <svg class="icon"><use href="#i-arrow" /></svg
+            ></a>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg class="icon"><use href="#i-code" /></svg>
+            </div>
+            <span class="card-index">03</span>
+            <h3>Open by design.</h3>
+            <p>
+              No black box. Explore the source, follow development, and help
+              shape what comes next on GitHub.
+            </p>
+            <a
+              href="https://github.com/SkidderClub/Vibe"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View the source <svg class="icon"><use href="#i-external" /></svg
+            ></a>
+          </article>
+        </div>
+      </section>
+
+      <section id="playground" class="section playground-section">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">
+                <span class="section-number">02 /</span> TRY BEFORE YOU LAUNCH
+              </div>
+              <h2>
+                A little less looking.<br /><span class="accent"
+                  >A lot more clicking.</span
+                >
+              </h2>
+            </div>
+            <p>
+              The real Skeet layout. Real module settings.<br />Go ahead. Make
+              yourself at home.
+            </p>
+          </div>
+          <div class="playground-topbar">
+            <span class="pill"
+              ><span class="status-dot"></span> INTERACTIVE PLAYGROUND</span
+            ><span class="demo-note"
+              >Preview only · changes stay in this playground</span
+            >
+          </div>
+          <div class="playground-controls">
+            <div>
+              <h3 id="category-title">Combat</h3>
+              <span class="playground-style-label">Original Skeet</span>
+            </div>
+            <label class="module-search"
+              ><svg class="icon"><use href="#i-search" /></svg
+              ><input
+                id="module-search"
+                type="search"
+                placeholder="Search modules & settings…"
+                aria-label="Search all modules and settings"
+                autocomplete="off"
+              /><kbd>/</kbd></label
+            ><label class="all-settings-toggle"
+              ><input type="checkbox" id="show-all-settings" /> Show all
+              settings</label
+            ><button id="reset-demo" class="text-button">
+              <svg class="icon"><use href="#i-reset" /></svg> Reset
+            </button>
+          </div>
+          <div class="skeet-stage">
+            <div
+              class="skeet-window"
+              id="skeet-window"
+              aria-label="Vibe Skeet ClickGUI playground"
+            ></div>
+          </div>
+          <div class="playground-status">
+            <span id="module-summary">Loading modules</span
+            ><span>LMB toggle · RMB settings · MMB bind</span>
+          </div>
+          <div class="sync-footer">
+            <span id="sync-status" role="status"
+              ><span class="status-dot"></span> Loading source snapshot…</span
+            ><a
+              id="source-link"
+              href="https://github.com/SkidderClub/Vibe"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View source on GitHub
+              <svg class="icon"><use href="#i-external" /></svg></a
+            ><button
+              id="sync-button"
+              class="text-button"
+              title="Check GitHub for new modules and settings"
+            >
+              <svg class="icon"><use href="#i-reset" /></svg> Refresh
+            </button>
+          </div>
+          <p class="playground-footnote">
+            The same layout, category icons, and pixel font as the client.
+            Enable “Show all settings” to reveal conditional controls. Local
+            files and user-installed scripts are available inside Minecraft.
+          </p>
+        </div>
+      </section>
+
+      <section id="showcase" class="section container">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">
+              <span class="section-number">03 /</span> LOOKS AS GOOD AS IT FEELS
+            </div>
+            <h2>One client. <span class="muted">Many personalities.</span></h2>
+          </div>
+          <p>
+            Actual in-game screenshots.<br />Find the interface that speaks to
+            you.
+          </p>
+        </div>
+        <div class="showcase-grid">
+          <article class="showcase-panel" data-gallery="clickgui">
+            <header class="showcase-panel-header">
+              <div>
+                <span class="eyebrow">PICK YOUR INTERFACE</span>
+                <h3>ClickGUIs</h3>
+              </div>
+              <span class="gallery-counter">01 / 05</span>
+            </header>
+            <label class="showcase-select-label"
+              ><span>Preview</span
+              ><select
+                class="gallery-select"
+                aria-label="ClickGUI screenshot"
+              ></select
+            ></label>
+            <div class="showcase-image-wrap">
+              <button
+                class="showcase-open"
+                aria-label="Enlarge Skeet screenshot"
+              >
+                <img
+                  class="showcase-image"
+                  src="assets/screenshots/ClickGUIs/Skeet.png"
+                  alt="Vibe Skeet in Minecraft"
+                  loading="lazy"
+                  width="2048"
+                  height="1094"
+                /></button
+              ><button
+                class="showcase-prev gallery-arrow prev"
+                aria-label="Previous ClickGUI screenshot"
+              >
+                ‹</button
+              ><button
+                class="showcase-next gallery-arrow next"
+                aria-label="Next ClickGUI screenshot"
+              >
+                ›</button
+              ><span class="showcase-zoom"
+                ><svg class="icon"><use href="#i-external" /></svg
+              ></span>
+            </div>
+            <div class="showcase-image-caption">
+              <strong class="showcase-image-name">Skeet</strong
+              ><span>Click to enlarge</span>
+            </div>
+            <div
+              class="showcase-thumbnails"
+              aria-label="ClickGUI screenshots"
+            ></div>
+          </article>
+          <article class="showcase-panel" data-gallery="other">
+            <header class="showcase-panel-header">
+              <div>
+                <span class="eyebrow">YOUR SETUP, YOUR WAY</span>
+                <h3>Editors & other GUIs</h3>
+              </div>
+              <span class="gallery-counter">01 / 14</span>
+            </header>
+            <label class="showcase-select-label"
+              ><span>Preview</span
+              ><select
+                class="gallery-select"
+                aria-label="Other GUI screenshot"
+              ></select
+            ></label>
+            <div class="showcase-image-wrap">
+              <button
+                class="showcase-open"
+                aria-label="Enlarge HUD Editor screenshot"
+              >
+                <img
+                  class="showcase-image"
+                  src="assets/screenshots/OtherGUIs/HUDEditor.png"
+                  alt="Vibe HUD Editor in Minecraft"
+                  loading="lazy"
+                  width="2048"
+                  height="1094"
+                /></button
+              ><button
+                class="showcase-prev gallery-arrow prev"
+                aria-label="Previous other GUI screenshot"
+              >
+                ‹</button
+              ><button
+                class="showcase-next gallery-arrow next"
+                aria-label="Next other GUI screenshot"
+              >
+                ›</button
+              ><span class="showcase-zoom"
+                ><svg class="icon"><use href="#i-external" /></svg
+              ></span>
+            </div>
+            <div class="showcase-image-caption">
+              <strong class="showcase-image-name">HUD Editor</strong
+              ><span>Click to enlarge</span>
+            </div>
+            <div
+              class="showcase-thumbnails"
+              aria-label="Other GUI screenshots"
+            ></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="themes" class="section container theme-section">
+        <div class="theme-copy">
+          <div class="eyebrow">
+            <span class="section-number">04 /</span> SET THE MOOD
+          </div>
+          <h2>
+            Same Vibe.<br /><span class="accent">Different frequency.</span>
+          </h2>
+          <p>
+            24 dark themes. 24 white themes. One animated rainbow. Find your
+            frequency and make it yours.
+          </p>
+          <button class="text-link" data-open-themes>
+            Explore all themes <svg class="icon"><use href="#i-arrow" /></svg>
+          </button>
+        </div>
+        <div class="theme-showcase">
+          <div class="theme-card-heading">
+            <span
+              ><svg class="icon"><use href="#i-palette" /></svg> PERSONALIZE
+              YOUR VIBE</span
+            ><span>49 THEMES</span>
+          </div>
+          <div
+            class="theme-mode-tabs"
+            data-theme-tabs="inline"
+            role="group"
+            aria-label="Theme background"
+          >
+            <button data-theme-mode="dark" aria-pressed="true">
+              Dark <span>24</span></button
+            ><button data-theme-mode="light" aria-pressed="false">
+              Light <span>24</span></button
+            ><button data-theme-mode="rainbow" aria-pressed="false">
+              Rainbow <span>01</span>
+            </button>
+          </div>
+          <div id="inline-themes" class="inline-themes"></div>
+          <div class="theme-preview-footer">
+            <span class="status-dot"></span
+            ><span
+              ><strong class="current-theme-name">Acid</strong> is your
+              frequency.</span
+            ><span class="theme-saved"
+              >SAVED LOCALLY <svg class="icon"><use href="#i-check" /></svg
+            ></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="reviews" class="section container reviews-section">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">
+              <span class="section-number">05 /</span> COMMUNITY SIGNAL
+            </div>
+            <h2>Good vibes. <span class="muted">From @heisthack.</span></h2>
+          </div>
+          <button id="write-review" class="button button-secondary">
+            Write a review <svg class="icon"><use href="#i-external" /></svg>
+          </button>
+        </div>
+        <div
+          id="reviews-list"
+          class="reviews-list featured-reviews"
+          aria-label="Reviews from @heisthack"
+        ></div>
+        <div class="reviews-footer">
+          <span>Community feedback from @heisthack.</span
+          ><a
+            href="https://www.youtube.com/@heisthacksjp"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Meet @heisthack <svg class="icon"><use href="#i-external" /></svg
+          ></a>
+        </div>
+      </section>
+
+      <section id="download" class="section download-section">
+        <div class="container">
+          <div class="download-heading">
+            <div class="eyebrow">
+              <span class="status-dot"></span> YOUR NEXT SESSION STARTS HERE
+            </div>
+            <h2>Ready to <span class="accent">vibe?</span></h2>
+            <p>Your client. Your setup. Let's get you in game.</p>
+          </div>
+          <div class="download-grid">
+            <article class="download-card mod-download">
+              <div class="download-card-top">
+                <div class="feature-icon">
+                  <svg class="icon"><use href="#i-box" /></svg>
+                </div>
+                <span class="pill">FORGE MOD</span>
+              </div>
+              <h3>The original Vibe.</h3>
+              <p>Drop the mod into your setup and make it yours.</p>
+              <div class="download-specs">
+                <span>Minecraft <strong>1.8.9</strong></span
+                ><span>Platform <strong>Forge</strong></span
+                ><span>Source version <strong data-version>0.0.5</strong></span>
+              </div>
+              <a
+                id="jar-download"
+                class="button button-primary full-width"
+                href="https://github.com/SkidderClub/Vibe/releases"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><span>Check .jar releases</span
+                ><svg class="icon"><use href="#i-download" /></svg
+              ></a>
+              <p id="release-status" class="download-note" role="status">
+                Checking for the latest published mod…
+              </p>
+            </article>
+            <article class="download-card launcher-download">
+              <div class="download-card-top">
+                <div class="feature-icon">
+                  <svg class="icon"><use href="#i-scripts" /></svg>
+                </div>
+                <span class="pill neutral">ON THE HORIZON</span>
+              </div>
+              <h3>One click. All Vibe.</h3>
+              <p>A dedicated launcher. An even simpler way to play.</p>
+              <div class="launcher-visual" aria-hidden="true">
+                <div class="launcher-terminal">
+                  <span class="accent">&gt;</span> vibe.launch<span
+                    class="terminal-cursor"
+                    >_</span
+                  ><span class="terminal-status"
+                    >something good is loading</span
+                  >
+                </div>
+              </div>
+              <button class="button button-disabled full-width" disabled>
+                Launcher coming soon <span>↗</span>
+              </button>
+              <p class="download-note">In development. Stay tuned.</p>
+            </article>
+          </div>
+          <details class="install-guide">
+            <summary>
+              <span
+                ><svg class="icon"><use href="#i-box" /></svg> First time
+                installing a Forge mod?</span
+              ><span>Installation guide <span class="accent">+</span></span>
+            </summary>
+            <ol>
+              <li>
+                <strong>Set up Minecraft 1.8.9.</strong> Install Java 8 and
+                Forge 1.8.9-11.15.1.2318 using the links in the
+                <a
+                  href="https://github.com/SkidderClub/Vibe#install"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Vibe installation instructions</a
+                >.
+              </li>
+              <li>
+                <strong>Add Vibe.</strong> Download a published Vibe mod JAR and
+                place it in your Minecraft game directory's
+                <code>mods</code> folder. If no release is available yet, follow
+                the repository's build instructions.
+              </li>
+              <li>
+                <strong>Launch and explore.</strong> Start the Forge profile.
+                Press <kbd>Right Shift</kbd> to open ClickGUI.
+              </li>
+            </ol>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer container">
+      <div class="footer-top">
+        <a href="#" class="brand"
+          ><img src="assets/logo.png" width="32" height="32" alt="" /><span
+            >vibe<span class="brand-dot">.</span></span
+          ></a
+        ><span class="footer-tagline">Find your edge. Keep your vibe.</span>
+        <div class="footer-links">
+          <a
+            href="https://github.com/SkidderClub/Vibe"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub <svg class="icon"><use href="#i-external" /></svg></a
+          ><a
+            href="https://dsc.gg/vibe-skidder-club"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Discord <svg class="icon"><use href="#i-external" /></svg></a
+          ><a href="#download">Download</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Vibe Client · Minecraft Forge 1.8.9</span
+        ><span class="credits"
+          >Make with <span class="accent">&lt;3</span> by
+          <a
+            href="https://github.com/SkidderClub"
+            target="_blank"
+            rel="noopener noreferrer"
+            >SkidderClub</a
+          ></span
+        ><span>Not affiliated with Mojang or Microsoft.</span>
+      </div>
+    </footer>
+
+    <dialog id="theme-dialog" class="theme-dialog">
+      <div class="dialog-heading">
+        <div>
+          <div class="eyebrow">MAKE IT YOURS</div>
+          <h2>Pick your frequency.</h2>
+        </div>
+        <button
+          class="icon-button"
+          data-close-dialog
+          aria-label="Close theme selector"
+        >
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <p>One click. A whole new atmosphere.</p>
+      <div
+        class="theme-mode-tabs"
+        data-theme-tabs="dialog"
+        role="group"
+        aria-label="Theme background"
+      >
+        <button data-theme-mode="dark" aria-pressed="true">
+          Dark <span>24</span></button
+        ><button data-theme-mode="light" aria-pressed="false">
+          Light <span>24</span></button
+        ><button data-theme-mode="rainbow" aria-pressed="false">
+          Rainbow <span>01</span>
+        </button>
+      </div>
+      <div id="all-themes" class="all-themes"></div>
+      <div class="dialog-footer">
+        Your website theme is saved on this device.
+      </div>
+    </dialog>
+    <dialog id="lightbox" class="lightbox">
+      <button
+        class="icon-button lightbox-close"
+        data-close-dialog
+        aria-label="Close enlarged screenshot"
+      >
+        <svg class="icon"><use href="#i-close" /></svg></button
+      ><img id="lightbox-image" alt="" />
+      <div id="lightbox-caption"></div>
+    </dialog>
+    <dialog id="review-dialog" class="review-dialog">
+      <div class="dialog-heading">
+        <div>
+          <div class="eyebrow">COMMUNITY SIGNAL</div>
+          <h2>How's the Vibe?</h2>
+        </div>
+        <button
+          class="icon-button"
+          data-close-dialog
+          aria-label="Close review form"
+        >
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <p>
+        Share your experience with the community. You'll review and publish your
+        submission on GitHub.
+      </p>
+      <form id="review-form">
+        <label for="review-rating">Your rating</label
+        ><select id="review-rating" name="rating">
+          <option value="5">★★★★★ — Love it</option>
+          <option value="4">★★★★☆ — Really good</option>
+          <option value="3">★★★☆☆ — It's okay</option>
+          <option value="2">★★☆☆☆ — Needs work</option>
+          <option value="1">★☆☆☆☆ — Not for me</option></select
+        ><label for="review-text">Your experience</label
+        ><textarea
+          id="review-text"
+          name="review"
+          minlength="20"
+          maxlength="1500"
+          rows="5"
+          placeholder="What do you like? What could be better?"
+          required
+        ></textarea>
+        <p class="form-hint">
+          20–1,500 characters. A GitHub account is required. Your submission
+          opens as a draft for you to review before publishing.
+        </p>
+        <button type="submit" class="button button-primary full-width">
+          Continue to GitHub <svg class="icon"><use href="#i-external" /></svg>
+        </button>
+      </form>
+    </dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+    <noscript
+      ><div class="noscript-note">
+        Enable JavaScript to use themes and the module playground. Downloads and
+        project links still work.
+      </div></noscript
+    >
+  </body>
+</html>
