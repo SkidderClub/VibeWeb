@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { parseClient, splitArgs, stripComments } from "../js/source-parser.js";
-import { pickJar, parseReview } from "../js/github.js";
+import { pickLauncher, parseReview } from "../js/github.js";
 
 const fixture = (module) => ({
   "src/module/ModuleManager.java":
@@ -119,7 +119,9 @@ test("the bundled snapshot has complete usable controls across every category", 
     data.modules.reduce((n, m) => n + m.settings.length, 0),
   );
   for (const module of data.modules)
-    assert.ok(data.categories.some((category) => category.id === module.category));
+    assert.ok(
+      data.categories.some((category) => category.id === module.category),
+    );
   for (const module of data.modules)
     for (const setting of module.settings) {
       assert.ok(setting.name);
@@ -143,27 +145,30 @@ test("the bundled snapshot has complete usable controls across every category", 
   // rename them. Nested profile behavior is checked by the dedicated fixture.
 });
 
-test("download selection skips prereleases and source archives and finds previous usable release", () => {
-  const jar = {
-    name: "Vibe-1.8.9.jar",
+test("launcher selection skips prereleases and source archives and finds previous usable release", () => {
+  const launcher = {
+    name: "VibeLauncher.zip",
     browser_download_url:
-      "https://github.com/SkidderClub/Vibe/releases/download/v1/Vibe.jar",
+      "https://github.com/SkidderClub/Vibe/releases/download/v1/VibeLauncher.zip",
   };
-  const selected = pickJar([
-    { prerelease: true, assets: [jar] },
+  const selected = pickLauncher([
+    { prerelease: true, assets: [launcher] },
     { assets: [] },
-    { tag_name: "v1", assets: [{ name: "Vibe-sources.jar" }, jar] },
+    {
+      tag_name: "v1",
+      assets: [{ name: "VibeLauncher-sources.zip" }, launcher],
+    },
   ]);
   assert.equal(selected.version, "v1");
-  assert.equal(selected.name, jar.name);
-  assert.equal(pickJar([{ assets: [] }]), null);
+  assert.equal(selected.name, launcher.name);
+  assert.equal(pickLauncher([{ assets: [] }]), null);
   assert.equal(
-    pickJar([
+    pickLauncher([
       {
         assets: [
           {
-            ...jar,
-            browser_download_url: "https://untrusted.example/download.jar",
+            ...launcher,
+            browser_download_url: "https://untrusted.example/download.zip",
           },
         ],
       },
@@ -192,5 +197,148 @@ test("only structured, moderated GitHub reviews are published", () => {
       body: "Rating: 9/5\n\n### Review\nFake rating pretending to be valid.",
     }),
     null,
+  );
+});
+
+test("launcher releases select installers by platform and ignore standalone mod files", () => {
+  const asset = (name) => ({
+    name,
+    browser_download_url: `https://github.com/SkidderClub/Vibe/releases/download/v2/${name}`,
+  });
+  const releases = [
+    { tag_name: "draft", draft: true, assets: [asset("VibeLauncher.exe")] },
+    {
+      tag_name: "preview",
+      prerelease: true,
+      assets: [asset("VibeLauncher.exe")],
+    },
+    {
+      tag_name: "v2",
+      published_at: "2026-10-03T12:00:00Z",
+      assets: [
+        asset("VibeLauncher-sources.zip"),
+        asset("VibeLauncher.jar"),
+        asset("VibeLauncher.exe"),
+        asset("VibeLauncher.dmg"),
+        asset("VibeLauncher.AppImage"),
+      ],
+    },
+    {
+      tag_name: "v1",
+      published_at: "2026-10-02T12:00:00Z",
+      assets: [asset("Vibe-1.8.9.jar")],
+    },
+  ];
+  assert.equal(pickLauncher(releases, "windows").name, "VibeLauncher.exe");
+  assert.equal(pickLauncher(releases, "mac").name, "VibeLauncher.dmg");
+  assert.equal(pickLauncher(releases, "linux").name, "VibeLauncher.AppImage");
+  assert.equal(pickLauncher([]), null);
+  assert.equal(
+    pickLauncher([
+      { name: "Vibe Launcher", assets: [asset("Vibe-1.8.9.jar")] },
+    ]),
+    null,
+  );
+  assert.equal(
+    pickLauncher([
+      { assets: [asset("Vibe-sources.zip"), asset("Vibe-mod.jar")] },
+    ]),
+    null,
+  );
+  assert.equal(
+    pickLauncher([
+      {
+        assets: [
+          {
+            ...asset("VibeLauncher.exe"),
+            browser_download_url: "https://untrusted.example/file.exe",
+          },
+        ],
+      },
+    ]),
+    null,
+  );
+});
+
+test("source reader resolves grouped constants and delegating appearance constructors", () => {
+  const data = parseClient(
+    fixture(`
+    private static final String FIRST="A", SECOND="B";
+    private final MultiSelectSetting modes=addSetting(new MultiSelectSetting("Modes",Arrays.asList(FIRST,SECOND),Arrays.asList(FIRST)));
+    private final Appearance normal=new Appearance("Visible",0xFF123456);
+    private final Appearance friend=new Appearance("Friends ",1,"Visible",0xFF654321);
+    private final class Appearance {
+      private Appearance(String side,int argb){this("",0,side,argb);}
+      private Appearance(String prefix,int profile,String side,int argb){
+        side=prefix+side;
+        java.util.function.BooleanSupplier selected=()->visibleFor(profile,"Chams");
+        color=addSetting(new ColorSetting(side+" Color",argb,selected));
+      }
+    }
+  `),
+  );
+  assert.deepEqual(data.modules[0].settings[0].options, ["A", "B"]);
+  const colors = data.modules[0].settings.slice(1);
+  assert.deepEqual(
+    colors.map((s) => s.name),
+    ["Visible Color", "Friends Visible Color"],
+  );
+  assert.equal(colors[1].default, "#654321");
+  assert.equal(colors[1].condition, 'visibleFor(1,"Chams")');
+  assert.notEqual(colors[0].variable, colors[1].variable);
+});
+
+test("composed settings expand looped gradients, enum choices, and constructor value overrides", () => {
+  const sources = fixture(
+    `private final Esp2DSettings twoD=new Esp2DSettings(s->addSetting(s),()->true);`,
+  );
+  sources["src/module/Esp2DSettings.java"] = `public final class Esp2DSettings {
+    public Esp2DSettings(Consumer register,BooleanSupplier visible){this(register,visible,"");}
+    public Esp2DSettings(Consumer register,BooleanSupplier visible,String keyPrefix){
+      box=new Element("Box",Kind.BOX,"Top");
+      bar=new Element("Armor",Kind.BAR,"Right");
+      bar.color.setValue(0xFF64A8FF);
+      gradient=new Gradient(keyPrefix+"Gradient",visible);
+    }
+    private final class Element {
+      private Element(String title,Kind kind,String side){
+        prefix=title+" ";
+        width=add(new NumberSetting(prefix+"Width",kind==Kind.BOX?1.5:2,.5,12,.25));
+        position=add(new ModeSetting(prefix+"Position",side,kind==Kind.BAR?new String[]{"Left","Top","Bottom","Right"}:new String[]{"Top","Bottom"}));
+        color=add(new ColorSetting(prefix+"Color",0xFFFFFFFF));
+      }
+    }
+    private final class Gradient {
+      private Gradient(String prefix,BooleanSupplier visible){
+        int[] defaults={0xFF00FF00,0xFFFF0000,0xFF0000FF};
+        for(int i=0;i<3;i++){
+          final int stop=i;
+          colors.add(add(new ColorSetting(prefix+" Stop "+(i+1),defaults[i],visible)));
+          positions.add(add(new NumberSetting(prefix+" Position "+(i+1),Math.min(1,i*.5),0,1,.01,visible)));
+        }
+      }
+    }
+  }`;
+  const settings = parseClient(sources).modules[0].settings;
+  assert.equal(settings.length, 12);
+  assert.equal(settings.find((s) => s.name === "Box Width").default, 1.5);
+  assert.equal(settings.find((s) => s.name === "Armor Width").default, 2);
+  assert.equal(
+    settings.find((s) => s.name === "Armor Color").default,
+    "#64a8ff",
+  );
+  assert.deepEqual(settings.find((s) => s.name === "Armor Position").options, [
+    "Left",
+    "Top",
+    "Bottom",
+    "Right",
+  ]);
+  assert.equal(
+    settings.find((s) => s.name === "Gradient Position 3").default,
+    1,
+  );
+  assert.equal(
+    settings.find((s) => s.name === "Gradient Stop 2").default,
+    "#ff0000",
   );
 });

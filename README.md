@@ -15,20 +15,18 @@ Open **http://127.0.0.1:4173**. Use a local server rather than opening `index.ht
 ## Publish on GitHub Pages
 
 1. Push the website files to a GitHub repository on `main` or `master`. The existing `.gitignore` excludes the temporary client checkout and testing tools.
-2. In **Settings → Pages → Build and deployment**, choose **GitHub Actions** as the source.
-3. Open **Actions → Refresh Vibe source and deploy Pages → Run workflow**, or push a change to start it.
+2. In **Settings → Pages → Build and deployment**, choose **Deploy from a branch**, your website branch, and the root folder.
+3. Push changes to that branch to update the website.
 
-The included workflow updates the source snapshot, validates it, stages only public website files, and deploys the site. It also runs hourly. All asset URLs are relative, so both `username.github.io` and `username.github.io/repository/` work. The workflow follows the [GitHub Pages custom workflow documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
-
-You can also host these files directly using Pages' **Deploy from a branch** option, root folder. Browser refresh continues to work, but the scheduled workflow is intended for the **GitHub Actions** deployment option.
+All asset URLs are relative, so both `username.github.io` and `username.github.io/repository/` work. Keep `CNAME` when deploying to the existing custom domain. The `.cache` source checkout and testing tools are ignored and are not public site files.
 
 ## Automatic module and setting updates
 
 - `data/client.json` is a bundled, generated source snapshot, so the playground starts without waiting for GitHub.
 - On each visit, the website checks the **current default branch of `SkidderClub/Vibe`**. If its commit changed, it fetches the module source at that specific commit and regenerates the complete explorer. It also checks every five minutes while the page is visible; **Refresh** checks immediately.
 - Source downloads run with bounded concurrency. A successful update is cached locally. If GitHub is offline, rate-limited, or an import fails, the last working snapshot remains usable and its status is shown honestly.
-- The hourly Pages workflow refreshes the bundled snapshot for everyone. GitHub controls schedule timing; a run can be delayed or disabled by repository inactivity/settings.
-- The reader imports registered modules, categories, defaults, limits, increments, strings, colors with opacity, modes, multiselects, helper factories, and nested ESP profile controls. It does not execute Java source.
+- Run the snapshot regeneration command below before publishing to refresh the bundled fallback too.
+- The reader imports registered modules, categories, defaults, limits, increments, strings, colors with opacity, modes, multiselects, helper factories, nested ESP profiles, the composed 2D appearance system, gradient stops, entity-color controls, and HUD array settings. It reads the client version from the upstream build file and does not execute Java source.
 - The playground follows the client's conditional setting visibility. Turn on **Show all settings** to explore every imported control, including controls normally hidden by another choice. Controls affect only the demo. Enabling modules never runs client code, opens local files, changes the website theme, or connects to Minecraft.
 - Choices based on a player's local files (for example ROMs and Waifu images) are marked as local to the client. User-installed runtime scripts cannot be known from the public repository.
 - A future upstream Java structure may require updating `js/source-parser.js`. Unsupported declarations fail the import instead of replacing the working snapshot with a partial one. The source commit and failure state remain visible; no website can guarantee arbitrary future source changes or uninterrupted GitHub access.
@@ -44,13 +42,19 @@ If the checkout already exists, use `git -C .cache/vibe-source pull --ff-only` f
 
 ## Downloads
 
-The primary download looks for a published, non-prerelease `.jar` in the latest 30 GitHub releases, excluding source/javadoc/development archives. Upload the installable mod JAR to a release in **SkidderClub/Vibe** and the button will pick it up automatically. Until a JAR is published, the button opens the release page and states that no JAR is available. If the API is unavailable, it keeps the working GitHub release link.
+Vibe is distributed through the launcher. The single download card checks the latest 30 public, stable releases in **SkidderClub/Vibe**, newest publication first.
 
-The launcher is clearly marked **Coming soon** and its button is disabled.
+The launcher button automatically selects a release installer (`.exe`, `.msi`, `.dmg`, `.pkg`, `.AppImage`, `.deb`, or `.rpm`) or a launcher-named `.jar`, `.zip`, or `.tar.gz`. Name archive assets with `Launcher` (for example `VibeLauncher.zip`) so they can be distinguished from mod/source archives. Windows, macOS, and Linux installers are preferred according to the visitor's platform.
+
+Publish the launcher as a stable GitHub release with its download file attached. The site checks once per minute while visible, when returning to the tab, and when **Refresh downloads** is clicked. Until a file is published, the enabled button opens GitHub releases. **View latest GitHub release** links to the newest release and its complete asset list. Failed API requests retain working download links.
+
+## Discord
+
+The header, mobile navigation, hero, and footer link to the invite from Vibe's README: `https://dsc.gg/vibe-skidder-club`.
 
 ## Featured reviews
 
-The four featured quotes are the exact reviews supplied by the website owner, attributed to **@heisthack**. The profile links to [@heisthacksjp on YouTube](https://www.youtube.com/@heisthacksjp); its public channel avatar is bundled locally. These quotes are curated content in `js/app.js`, with no invented ratings, dates, or verification badges.
+The four featured quotes are the exact reviews supplied by the website owner, attributed to **@heisthacks**. The profile links to [@heisthacksjp on YouTube](https://www.youtube.com/@heisthacksjp); its public channel avatar is bundled locally. These quotes are curated content in `js/app.js`, with no invented ratings, dates, or verification badges.
 
 **Write a review** lets visitors compose feedback and opens a prefilled GitHub issue. The visitor signs in, reviews the draft, and publishes it themselves. Submissions do not automatically replace the four featured quotes.
 

@@ -29,7 +29,56 @@ function conditionVisible(expression, module, state) {
       state.values.has(s.id) ? state.values.get(s.id) : s.default,
     ]),
   );
-  let text = expression.replace(
+  const byName = (name) => {
+    const setting = module.settings.find((s) => s.name === name);
+    return setting ? values.get(setting.variable) : undefined;
+  };
+  const selectedProfile =
+    { Players: 0, Friends: 1, Targets: 2 }[byName("Edit Appearance")] ?? 0;
+  const usesDefaults = (profile) =>
+    !!byName(
+      profile === 1
+        ? "Friends/Teams Use Player Defaults"
+        : "Targets Use Player Defaults",
+    );
+  let text = expression;
+  if (module.id === "EspModule") {
+    text = text.replace(/profileSelected\(([012])\)/g, (_, profile) =>
+      String(selectedProfile === Number(profile)),
+    );
+    text = text.replace(
+      /visibleFor\(([012])\s*,\s*"([^"]+)"\)/g,
+      (_, profile, mode) =>
+        String(
+          selectedProfile === Number(profile) &&
+            (byName("ESP Modes") || []).includes(mode) &&
+            (Number(profile) === 0 || !usesDefaults(Number(profile))),
+        ),
+    );
+  }
+  text = text.replace(
+    /\b(\w+)\.(getInt|getDouble|getValue)\(\)/g,
+    (all, key) =>
+      typeof values.get(key) === "number" ? String(values.get(key)) : all,
+  );
+  text = text.replace(
+    /(-?\d+(?:\.\d+)?)\s*(<=|>=|==|!=|<|>)\s*(-?\d+(?:\.\d+)?)/g,
+    (_, first, operator, second) => {
+      const a = Number(first),
+        b = Number(second);
+      return String(
+        {
+          "<=": () => a <= b,
+          ">=": () => a >= b,
+          "==": () => a === b,
+          "!=": () => a !== b,
+          "<": () => a < b,
+          ">": () => a > b,
+        }[operator](),
+      );
+    },
+  );
+  text = text.replace(
     /([\w]+)\.(isEnabled|is|isSelected|isSelectedIgnoreCase)\(("(?:\\.|[^"\\])*"|[A-Z_]+)?\)/g,
     (match, key, method, arg) => {
       if (!values.has(key)) return match;
@@ -109,7 +158,9 @@ export class SkeetGUI {
     this.binding = null;
     this.measure = document.createElement("canvas").getContext("2d");
     this.measure.font = '8px "Vibe Minecraft"';
-    document.fonts.load('8px "Vibe Minecraft"').then(() => { if (this.client) this.render(); });
+    document.fonts.load('8px "Vibe Minecraft"').then(() => {
+      if (this.client) this.render();
+    });
     root.classList.add("skeet-window");
     this.board = element("div", "skeet-board");
     this.rail = element("nav", "skeet-rail");
@@ -356,7 +407,7 @@ export class SkeetGUI {
         (module.settings.length ? (open ? "-" : "+") : "");
       expand.setAttribute("aria-expanded", String(open));
       panel.replaceChildren(
-        ...module.settings
+        ...(open ? module.settings : [])
           .filter(
             (s) => this.showAll || conditionVisible(s.condition, module, state),
           )
@@ -400,7 +451,14 @@ export class SkeetGUI {
       name = module.name + ": " + setting.name,
       state = this.state(module);
     if (["boolean", "mode", "string", "multiselect"].includes(setting.type)) {
-      const text = setting.type === "boolean" ? (value ? "ON" : "OFF") : setting.type === "multiselect" ? value.length + " selected" : String(value).slice(0, 15);
+      const text =
+        setting.type === "boolean"
+          ? value
+            ? "ON"
+            : "OFF"
+          : setting.type === "multiselect"
+            ? value.length + " selected"
+            : String(value).slice(0, 15);
       wrapper.style.gridTemplateColumns = `minmax(0, 1fr) ${Math.min(80, Math.ceil(this.measure.measureText(text).width) + 1)}px`;
     }
     const changed = (value, refresh = false) => {
@@ -480,6 +538,11 @@ export class SkeetGUI {
           } else changed(Number(input.value));
           paint();
         });
+        input.addEventListener("change", () =>
+          wrapper.dispatchEvent(
+            new CustomEvent("skeet-value-change", { bubbles: true }),
+          ),
+        );
         inputs.push(input);
         controls.append(input);
       });

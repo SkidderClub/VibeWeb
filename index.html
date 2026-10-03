@@ -113,6 +113,12 @@
           ><a href="#playground"
             >Playground <span class="nav-label">LIVE</span></a
           ><a href="#showcase">Showcase</a><a href="#reviews">Reviews</a>
+          <a
+            href="https://dsc.gg/vibe-skidder-club"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Discord <svg class="icon"><use href="#i-external" /></svg
+          ></a>
         </nav>
         <div class="nav-actions">
           <button
@@ -144,6 +150,12 @@
         <a href="#features">Overview</a><a href="#playground">Playground</a
         ><a href="#showcase">Showcase</a><a href="#reviews">Reviews</a
         ><a href="#download">Download</a>
+        <a
+          href="https://dsc.gg/vibe-skidder-club"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Join Discord ↗</a
+        >
       </nav>
     </header>
 
@@ -171,8 +183,8 @@
             </div>
             <span class="sr-only"
               >Start vibeing now. Don't worry, Astra will take care of your
-              problems. Get good get Vibe. Welcome to Vibe. Why Vape when
-              Vibe. Don't make any mistakes. no mistakes allowed.</span
+              problems. Get good get Vibe. Welcome to Vibe. Why Vape when Vibe.
+              Don't make any mistakes. no mistakes allowed.</span
             >
           </div>
           <p class="hero-description">
@@ -181,12 +193,21 @@
           </p>
           <div class="hero-actions">
             <a href="#download" class="button button-primary"
-              >Download Vibe
+              >Download launcher
               <svg class="icon"><use href="#i-download" /></svg></a
             ><a href="#playground" class="button button-secondary"
               >Try the playground <svg class="icon"><use href="#i-arrow" /></svg
             ></a>
           </div>
+          <a
+            class="hero-community text-link"
+            href="https://dsc.gg/vibe-skidder-club"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="status-dot"></span> Join the Vibe Discord
+            <svg class="icon"><use href="#i-external" /></svg>
+          </a>
           <div class="hero-meta">
             <span
               ><svg class="icon"><use href="#i-check" /></svg> Free & open
@@ -194,7 +215,7 @@
             ><span
               ><svg class="icon"><use href="#i-check" /></svg> Made for
               Forge</span
-            ><span class="version-tag">v<span data-version>0.0.5</span></span>
+            ><span class="version-tag">v<span data-version>0.0.6</span></span>
           </div>
         </div>
         <div class="hero-art" aria-label="Preview of the Vibe Skeet interface">
@@ -229,7 +250,7 @@
       <div class="stats-strip">
         <div class="container stats-grid">
           <div>
-            <strong data-module-count>68</strong><span>MODULES TO EXPLORE</span>
+            <strong data-module-count>78</strong><span>MODULES TO EXPLORE</span>
           </div>
           <div>
             <strong>49<span class="accent">.</span></strong
@@ -568,7 +589,7 @@
             <div class="eyebrow">
               <span class="section-number">05 /</span> COMMUNITY SIGNAL
             </div>
-            <h2>Good vibes. <span class="muted">From @heisthack.</span></h2>
+            <h2>Good vibes. <span class="muted">From @heisthacks.</span></h2>
           </div>
           <button id="write-review" class="button button-secondary">
             Write a review <svg class="icon"><use href="#i-external" /></svg>
@@ -577,15 +598,15 @@
         <div
           id="reviews-list"
           class="reviews-list featured-reviews"
-          aria-label="Reviews from @heisthack"
+          aria-label="Reviews from @heisthacks"
         ></div>
         <div class="reviews-footer">
-          <span>Community feedback from @heisthack.</span
+          <span>Community feedback from @heisthacks.</span
           ><a
             href="https://www.youtube.com/@heisthacksjp"
             target="_blank"
             rel="noopener noreferrer"
-            >Meet @heisthack <svg class="icon"><use href="#i-external" /></svg
+            >Meet @heisthacks <svg class="icon"><use href="#i-external" /></svg
           ></a>
         </div>
       </section>
@@ -600,85 +621,75 @@
             <p>Your client. Your setup. Let's get you in game.</p>
           </div>
           <div class="download-grid">
-            <article class="download-card mod-download">
-              <div class="download-card-top">
-                <div class="feature-icon">
-                  <svg class="icon"><use href="#i-box" /></svg>
-                </div>
-                <span class="pill">FORGE MOD</span>
-              </div>
-              <h3>The original Vibe.</h3>
-              <p>Drop the mod into your setup and make it yours.</p>
-              <div class="download-specs">
-                <span>Minecraft <strong>1.8.9</strong></span
-                ><span>Platform <strong>Forge</strong></span
-                ><span>Source version <strong data-version>0.0.5</strong></span>
-              </div>
-              <a
-                id="jar-download"
-                class="button button-primary full-width"
-                href="https://github.com/SkidderClub/Vibe/releases"
-                target="_blank"
-                rel="noopener noreferrer"
-                ><span>Check .jar releases</span
-                ><svg class="icon"><use href="#i-download" /></svg
-              ></a>
-              <p id="release-status" class="download-note" role="status">
-                Checking for the latest published mod…
-              </p>
-            </article>
             <article class="download-card launcher-download">
               <div class="download-card-top">
                 <div class="feature-icon">
                   <svg class="icon"><use href="#i-scripts" /></svg>
                 </div>
-                <span class="pill neutral">ON THE HORIZON</span>
+                <span class="pill neutral" id="launcher-badge">LAUNCHER</span>
               </div>
               <h3>One click. All Vibe.</h3>
-              <p>A dedicated launcher. An even simpler way to play.</p>
+              <p>
+                Get Vibe through the launcher. Your next session starts here.
+              </p>
               <div class="launcher-visual" aria-hidden="true">
                 <div class="launcher-terminal">
                   <span class="accent">&gt;</span> vibe.launch<span
                     class="terminal-cursor"
                     >_</span
-                  ><span class="terminal-status"
-                    >something good is loading</span
+                  ><span class="terminal-status" id="launcher-terminal-status"
+                    >checking for the next release</span
                   >
                 </div>
               </div>
-              <button class="button button-disabled full-width" disabled>
-                Launcher coming soon <span>↗</span>
-              </button>
-              <p class="download-note">In development. Stay tuned.</p>
+              <a
+                id="launcher-download"
+                class="button button-primary full-width"
+                href="https://github.com/SkidderClub/Vibe/releases"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>Check launcher release</span
+                ><svg class="icon"><use href="#i-download" /></svg>
+              </a>
+              <p id="launcher-status" class="download-note" role="status">
+                Checking for the latest launcher…
+              </p>
             </article>
+          </div>
+          <div class="release-links">
+            <a
+              id="latest-release"
+              class="text-link"
+              href="https://github.com/SkidderClub/Vibe/releases/latest"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><span>View latest GitHub release</span
+              ><svg class="icon"><use href="#i-external" /></svg
+            ></a>
+            <button id="refresh-downloads" class="text-link" type="button">
+              Refresh downloads <svg class="icon"><use href="#i-reset" /></svg>
+            </button>
           </div>
           <details class="install-guide">
             <summary>
               <span
                 ><svg class="icon"><use href="#i-box" /></svg> First time
-                installing a Forge mod?</span
+                installing Vibe?</span
               ><span>Installation guide <span class="accent">+</span></span>
             </summary>
             <ol>
               <li>
-                <strong>Set up Minecraft 1.8.9.</strong> Install Java 8 and
-                Forge 1.8.9-11.15.1.2318 using the links in the
-                <a
-                  href="https://github.com/SkidderClub/Vibe#install"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >Vibe installation instructions</a
-                >.
+                <strong>Get the launcher.</strong> Download the latest Vibe
+                Launcher using the button above.
               </li>
               <li>
-                <strong>Add Vibe.</strong> Download a published Vibe mod JAR and
-                place it in your Minecraft game directory's
-                <code>mods</code> folder. If no release is available yet, follow
-                the repository's build instructions.
+                <strong>Set up Vibe.</strong> Open the launcher and follow its
+                setup instructions.
               </li>
               <li>
-                <strong>Launch and explore.</strong> Start the Forge profile.
-                Press <kbd>Right Shift</kbd> to open ClickGUI.
+                <strong>Launch and explore.</strong> Start Vibe through the
+                launcher. Press <kbd>Right Shift</kbd> to open ClickGUI.
               </li>
             </ol>
           </details>

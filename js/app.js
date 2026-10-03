@@ -1,4 +1,4 @@
-import { checkSource, latestJar, REPO_URL } from "./github.js";
+import { checkSource, latestDownloads, REPO_URL } from "./github.js";
 import { THEMES, findTheme } from "./themes.js";
 import { SkeetGUI } from "./skeet.js";
 
@@ -208,7 +208,10 @@ function typeMotto() {
   const message = MOTTOS[mottoIndex];
   if (reducedMotion.matches) {
     $("#typed-motto").textContent = message;
-    $("#motto-count").textContent = String(mottoIndex + 1).padStart(2, "0") + " / " + String(MOTTOS.length).padStart(2, "0");
+    $("#motto-count").textContent =
+      String(mottoIndex + 1).padStart(2, "0") +
+      " / " +
+      String(MOTTOS.length).padStart(2, "0");
     return;
   }
   letter += deleting ? -1 : 1;
@@ -327,6 +330,7 @@ async function loadClient() {
       cached = readStorage("vibe-source-v1");
     const data =
       cached?.schemaVersion === 1 &&
+      cached.parserVersion === bundled.parserVersion &&
       Array.isArray(cached.modules) &&
       Array.isArray(cached.categories) &&
       cached.modules.length &&
@@ -454,25 +458,50 @@ $$("[data-gallery]").forEach((panel) => {
   show(0);
 });
 
+let downloading = false;
 async function loadDownload() {
+  if (downloading) return;
+  downloading = true;
   try {
-    const asset = await latestJar();
-    if (asset) {
-      $("#jar-download").href = asset.browser_download_url;
-      $("#jar-download").querySelector("span").textContent =
-        "Download Vibe .jar";
-      $("#release-status").textContent =
-        `${asset.version} · ${(asset.size / 1024 / 1024).toFixed(1)} MB · Official GitHub release`;
-    } else {
-      $("#release-status").textContent =
-        "No published .jar yet. Releases will appear here automatically.";
-    }
+    const platform = /Mac/i.test(navigator.platform)
+      ? "mac"
+      : /Linux/i.test(navigator.platform)
+        ? "linux"
+        : "windows";
+    const { launcher, release } = await latestDownloads(platform);
+    $("#launcher-download").href =
+      launcher?.browser_download_url ||
+      release?.html_url ||
+      `${REPO_URL}/releases`;
+    $("#launcher-download span").textContent = launcher
+      ? "Download Vibe Launcher"
+      : "Check launcher release";
+    $("#launcher-status").textContent = launcher
+      ? `${launcher.version} · ${(launcher.size / 1024 / 1024).toFixed(1)} MB · ${launcher.name}`
+      : "The launcher download will appear here as soon as its release is published.";
+    $("#launcher-badge").textContent = launcher ? "AVAILABLE NOW" : "LAUNCHER";
+    $("#launcher-terminal-status").textContent = launcher
+      ? "ready when you are"
+      : "checking for the next release";
+    $("#latest-release").href = release?.html_url || `${REPO_URL}/releases`;
+    $("#latest-release span").textContent = release
+      ? `View release ${release.tag_name}`
+      : "View GitHub releases";
   } catch {
-    $("#release-status").textContent =
-      "Release check unavailable. Browse GitHub releases directly.";
+    $("#launcher-status").textContent =
+      "Release check unavailable. Open GitHub to get the latest launcher.";
+  } finally {
+    downloading = false;
   }
 }
 loadDownload();
+setInterval(() => {
+  if (!document.hidden) loadDownload();
+}, 60 * 1000);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) loadDownload();
+});
+$("#refresh-downloads").addEventListener("click", () => loadDownload());
 
 const suppliedReviews = [
   "+rep best client of all time",
@@ -497,7 +526,7 @@ $("#reviews-list").replaceChildren(
     avatar.width = 38;
     avatar.height = 38;
     avatar.loading = "lazy";
-    const name = node("span", "", "@heisthack");
+    const name = node("span", "", "@heisthacks");
     name.append(node("small", "", "Vibe community"));
     author.append(avatar, name, icon("external"));
     card.append(author);

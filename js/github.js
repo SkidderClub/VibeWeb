@@ -6,6 +6,7 @@ const API = `https://api.github.com/repos/${REPOSITORY}`;
 
 export async function request(url, json = true) {
   const response = await fetch(url, {
+    cache: "no-store",
     signal: AbortSignal.timeout(15000),
     headers: json ? { Accept: "application/vnd.github+json" } : {},
   });
@@ -34,9 +35,12 @@ export async function checkSource(current, report = () => {}) {
     .filter(
       (file) =>
         file.type === "blob" &&
-        file.path.endsWith(".java") &&
-        (file.path.startsWith("src/main/java/dev/vibe/module/") ||
-          file.path === "src/main/java/dev/vibe/Vibe.java"),
+        ((file.path.endsWith(".java") &&
+          (file.path.startsWith("src/main/java/dev/vibe/module/") ||
+            file.path.startsWith("src/main/java/dev/vibe/setting/") ||
+            file.path === "src/main/java/dev/vibe/hud/ArrayListSettings.java" ||
+            file.path === "src/main/java/dev/vibe/Vibe.java")) ||
+          file.path === "build.gradle"),
     )
     .map((file) => file.path);
   const sources = {};
@@ -70,18 +74,45 @@ export async function checkSource(current, report = () => {}) {
   return data;
 }
 
-export function pickJar(releases) {
-  // Drafts and prereleases are deliberately excluded from the primary download.
-  for (const release of releases.filter((r) => !r.draft && !r.prerelease)) {
-    const asset = release.assets?.find(
-      (a) =>
-        /\.jar$/i.test(a.name) &&
-        !/(?:sources|javadoc|dev|unmapped)\.jar$/i.test(a.name),
+export function publicReleases(releases) {
+  return releases
+    .filter((r) => !r.draft && !r.prerelease)
+    .sort(
+      (a, b) =>
+        (Date.parse(b.published_at || b.created_at) || 0) -
+        (Date.parse(a.published_at || a.created_at) || 0),
     );
-    if (
-      asset &&
-      asset.browser_download_url?.startsWith(`${REPO_URL}/releases/download/`)
-    )
+}
+
+export function pickLauncher(releases, platform = "windows") {
+  const preferred =
+    {
+      windows: /\.(?:exe|msi)$/i,
+      mac: /\.(?:dmg|pkg)$/i,
+      linux: /\.(?:appimage|deb|rpm)$/i,
+    }[platform] || /\.(?:exe|msi)$/i;
+  for (const release of publicReleases(releases)) {
+    const assets = (release.assets || []).filter(
+      (asset) =>
+        asset.browser_download_url?.startsWith(
+          `${REPO_URL}/releases/download/`,
+        ) &&
+        !/(?:sources?|javadoc|checksums?|sha256|symbols)/i.test(asset.name) &&
+        (/\.(?:exe|msi|dmg|pkg|appimage|deb|rpm)$/i.test(asset.name) ||
+          ((/launcher/i.test(asset.name) ||
+            (/launcher/i.test(release.name || "") &&
+              !/(?:1\.8\.9|forge|[-_]mod(?:[._-]|$))/i.test(asset.name))) &&
+            /\.(?:jar|zip|tar\.gz)$/i.test(asset.name))),
+    );
+    const asset =
+      assets.find((a) => preferred.test(a.name)) ||
+      assets.find(
+        (a) =>
+          /launcher/i.test(a.name) &&
+          !/\.(?:exe|msi|dmg|pkg|appimage|deb|rpm)$/i.test(a.name),
+      ) ||
+      assets[0];
+    if (asset)
       return {
         ...asset,
         version: release.tag_name,
@@ -91,9 +122,12 @@ export function pickJar(releases) {
   return null;
 }
 
-export async function latestJar() {
-  // A latest release without a JAR must not hide a previous usable release.
-  return pickJar(await request(`${API}/releases?per_page=30`));
+export async function latestDownloads(platform) {
+  const releases = await request(`${API}/releases?per_page=30`);
+  return {
+    launcher: pickLauncher(releases, platform),
+    release: publicReleases(releases)[0] || null,
+  };
 }
 
 export function parseReview(issue) {

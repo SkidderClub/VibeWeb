@@ -16,8 +16,17 @@ async function walk(directory) {
   }
 }
 await walk("src/main/java/dev/vibe/module");
+await walk("src/main/java/dev/vibe/setting");
+sources["src/main/java/dev/vibe/hud/ArrayListSettings.java"] = await readFile(
+  resolve(sourceRoot, "src/main/java/dev/vibe/hud/ArrayListSettings.java"),
+  "utf8",
+);
 sources["src/main/java/dev/vibe/Vibe.java"] = await readFile(
   resolve(sourceRoot, "src/main/java/dev/vibe/Vibe.java"),
+  "utf8",
+);
+sources["build.gradle"] = await readFile(
+  resolve(sourceRoot, "build.gradle"),
   "utf8",
 );
 const sha = execFileSync("git", ["rev-parse", "HEAD"], {

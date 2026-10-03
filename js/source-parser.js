@@ -1,5 +1,6 @@
 // A non-executing reader for Vibe's Java setting declarations. Shared by the
 // browser and scheduled snapshot builder. Unknown structures fail the sync.
+import { readConstructedSettings } from "./constructed-settings.js";
 export function stripComments(source) {
   return source.replace(
     /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\/\/[^\n]*|\/\*[\s\S]*?\*\//g,
@@ -55,6 +56,30 @@ function value(expression, env) {
   if (Object.hasOwn(env, s)) return env[s];
   if (s.startsWith("(") && enclosed(s, 0).end === s.length)
     return value(enclosed(s, 0).text, env);
+  // Literal constructor expressions only; never eval or run client methods.
+  const ternary = splitArgs(s, "?");
+  if (ternary.length === 2) {
+    const branches = splitArgs(ternary[1], ":");
+    if (branches.length === 2)
+      return value(branches[value(ternary[0], env) ? 0 : 1], env);
+  }
+  for (const operator of ["||", "&&", "==", "!=", "<=", ">=", "<", ">"]) {
+    const pieces = s.split(operator);
+    if (pieces.length === 2 && !/["()]/.test(pieces.join(""))) {
+      const a = value(pieces[0], env),
+        b = value(pieces[1], env);
+      return {
+        "||": () => a || b,
+        "&&": () => a && b,
+        "==": () => a === b,
+        "!=": () => a !== b,
+        "<=": () => a <= b,
+        ">=": () => a >= b,
+        "<": () => a < b,
+        ">": () => a > b,
+      }[operator]();
+    }
+  }
   for (const operator of ["|", "&"]) {
     const parts = splitArgs(s, operator);
     if (parts.length > 1)
@@ -69,6 +94,26 @@ function value(expression, env) {
   if (/^0x[\da-f]+$/i.test(s)) return Number(s);
   if (/^-?(?:\d*\.)?\d+(?:e[+-]?\d+)?[dfl]?$/i.test(s))
     return Number(s.replace(/[dfl]$/i, ""));
+  for (const operator of ["*", "/"]) {
+    const parts = splitArgs(s, operator);
+    if (parts.length > 1)
+      return parts
+        .map((x) => value(x, env))
+        .reduce((a, b) => (operator === "*" ? a * b : a / b));
+  }
+  const math = s.match(/^Math\.(min|max)\(/);
+  if (math)
+    return Math[math[1]](
+      ...splitArgs(enclosed(s, math[0].length - 1).text).map((x) =>
+        value(x, env),
+      ),
+    );
+  const index = s.match(/^(\w+)\[([^\]]+)\]$/);
+  if (index && Array.isArray(env[index[1]]))
+    return env[index[1]][value(index[2], env)];
+  if (s.startsWith("{") && enclosed(s, 0, "{", "}").end === s.length)
+    return splitArgs(enclosed(s, 0, "{", "}").text).map((x) => value(x, env));
+  if (/^Kind\.\w+$/.test(s)) return s.slice(5);
   if (s === "true" || s === "false") return s === "true";
   if (/Collections\.(?:<\w+>)?empty(?:List|Set)\(\)/.test(s) || s === "null")
     return [];
@@ -76,7 +121,10 @@ function value(expression, env) {
     return splitArgs(enclosed(s, s.indexOf("(")).text).map((x) =>
       value(x, env),
     );
-  if (/^new String\[\]\s*\{/.test(s))
+  if (
+    /^new String\[\]\s*\{/.test(s) ||
+    /^new String\[\]\s*\{/.test(s.replace(/\s/g, ""))
+  )
     return splitArgs(enclosed(s, s.indexOf("{"), "{", "}").text).map((x) =>
       value(x, env),
     );
@@ -88,12 +136,16 @@ function value(expression, env) {
 function constants(source, base = {}) {
   const env = { ...base };
   for (const m of source.matchAll(
-    /(?:static\s+)?final\s+(?:String|int|double|float|List<String>)\s+(\w+)\s*=\s*([^;]+);/g,
+    /(?:static\s+)?final\s+(?:String|int|double|float|List<String>)\s+([^;]+);/g,
   )) {
-    try {
-      env[m[1]] = value(m[2], env);
-    } catch {
-      /* Not a literal setting constant. */
+    for (const declaration of splitArgs(m[1])) {
+      const assignment = declaration.match(/^(\w+)\s*=\s*([\s\S]+)$/);
+      if (!assignment) continue;
+      try {
+        env[assignment[1]] = value(assignment[2], env);
+      } catch {
+        /* Not a literal setting constant. */
+      }
     }
   }
   return env;
@@ -134,9 +186,11 @@ function setting(type, args, env, variable) {
         item.dynamic = true;
       }
     }
-    item.options = [...new Set([item.default, ...item.options])].filter(
+    item.options = [...new Set(item.options)].filter(
       (x) => typeof x === "string",
     );
+    if (!item.options.includes(item.default))
+      item.options.unshift(item.default);
     if (item.dynamic)
       item.note = "Additional choices are loaded from your local client files.";
   } else if (kind === "color") {
@@ -155,7 +209,28 @@ function setting(type, args, env, variable) {
   return item;
 }
 
-function readSettings(raw, inheritedEnv = {}, inheritedHelpers = {}) {
+function resolvePredicate(expression, env) {
+  let text = expression.replace(/^\(\)\s*->\s*/, "");
+  for (let pass = 0; pass < 4; pass++) {
+    text = text.replace(/\b(\w+)\.getAsBoolean\(\)/g, (all, key) =>
+      env._predicates?.[key] ? `(${env._predicates[key]})` : all,
+    );
+  }
+  text = text.replace(/\((\w+)\)/g, (all, key) =>
+    typeof env[key] === "string" ? `(${JSON.stringify(env[key])})` : all,
+  );
+  text = text.replace(/\b(type|profile)\b/g, (all) =>
+    Number.isFinite(env[all]) ? String(env[all]) : all,
+  );
+  return text;
+}
+
+function readSettings(
+  raw,
+  inheritedEnv = {},
+  inheritedHelpers = {},
+  namespace = "",
+) {
   let source = raw;
   const env = constants(source, inheritedEnv),
     helpers = { ...inheritedHelpers },
@@ -192,18 +267,39 @@ function readSettings(raw, inheritedEnv = {}, inheritedHelpers = {}) {
       source.slice(body.end);
   }
   const output = [];
+  env._predicates = { ...inheritedEnv._predicates };
+  for (const predicate of source.matchAll(
+    /(?:BooleanSupplier|java\.util\.function\.BooleanSupplier)\s+(\w+)\s*=\s*([^;]+);/g,
+  )) {
+    if (predicate[2].includes("->"))
+      env._predicates[predicate[1]] = resolvePredicate(predicate[2], env);
+    else {
+      const returned = predicate[2].match(/return\s+([^;]+)$/);
+      if (returned)
+        env._predicates[predicate[1]] = resolvePredicate(returned[1], env);
+    }
+  }
   function parseExpression(expression, context, variable) {
     const expressionStart = expression.trim().replace(/^addSetting\(/, "");
     const direct = expressionStart.match(
       /^new\s+(?:[\w]+\.)*(\w+Setting)\s*\(/,
     );
-    if (direct)
-      return setting(
-        direct[1],
-        splitArgs(enclosed(expressionStart, direct[0].length - 1).text),
-        context,
-        variable,
+    if (direct) {
+      const args = splitArgs(
+        enclosed(expressionStart, direct[0].length - 1).text,
+      ).map((arg) =>
+        context._predicates?.[arg] ? `() -> ${context._predicates[arg]}` : arg,
       );
+      const item = setting(
+        direct[1],
+        args,
+        context,
+        namespace && variable ? namespace + "_" + variable : variable,
+      );
+      if (item.condition)
+        item.condition = resolvePredicate(item.condition, context);
+      return item;
+    }
     const call = expressionStart.match(/^(\w+)\s*\(/);
     if (!call || !helpers[call[1]])
       throw new Error(
@@ -246,6 +342,14 @@ function readSettings(raw, inheritedEnv = {}, inheritedHelpers = {}) {
       .slice(Math.max(0, m.index - 100), m.index)
       .match(/(\w+)\s*=\s*$/)?.[1];
     const call = enclosed(source, m.index + m[0].length - 1);
+    // Registration callbacks are expanded from their settings-group class.
+    if (
+      /^\w+$/.test(call.text.trim()) &&
+      new RegExp("\\b" + call.text.trim() + "\\s*->[^;]*$").test(
+        source.slice(Math.max(0, m.index - 90), m.index),
+      )
+    )
+      continue;
     output.push(parseExpression(call.text, env, variable));
   }
   for (const m of source.matchAll(/\b(\w+)\s*=\s*(\w+)\s*\(/g)) {
@@ -254,27 +358,91 @@ function readSettings(raw, inheritedEnv = {}, inheritedHelpers = {}) {
     output.push(parseExpression(m[2] + "(" + call.text + ")", env, m[1]));
   }
   for (const [className, body] of Object.entries(inner)) {
-    const constructor = body.match(
-      new RegExp("(?:private|public|protected)\\s+" + className + "\\s*\\("),
-    );
-    if (!constructor) continue;
-    const params = splitArgs(
-      enclosed(body, constructor.index + constructor[0].length - 1).text,
-    ).map((x) => x.split(/\s+/).at(-1));
+    const constructors = [
+      ...body.matchAll(
+        new RegExp(
+          "(?:private|public|protected)\\s+" + className + "\\s*\\(",
+          "g",
+        ),
+      ),
+    ].map((constructor) => {
+      const args = enclosed(
+        body,
+        constructor.index + constructor[0].length - 1,
+      );
+      const brace = body.indexOf("{", args.end);
+      return {
+        params: splitArgs(args.text).map((x) => x.split(/\s+/).at(-1)),
+        body: enclosed(body, brace, "{", "}").text,
+      };
+    });
+    if (!constructors.length) continue;
     for (const m of source.matchAll(
       new RegExp("new\\s+" + className + "\\s*\\(", "g"),
     )) {
       const args = splitArgs(enclosed(source, m.index + m[0].length - 1).text),
-        context = { ...env };
-      params.forEach((name, i) => {
+        context = { ...env, _predicates: { ...env._predicates } };
+      let constructor = constructors.find(
+        (c) => c.params.length === args.length,
+      );
+      if (!constructor)
+        throw new Error(`Unsupported constructor: ${className}`);
+      constructor.params.forEach((name, i) => {
         try {
           context[name] = value(args[i], env);
         } catch {
-          /* Visibility predicate. */
+          if (args[i]?.includes("->"))
+            context._predicates[name] = resolvePredicate(args[i], env);
         }
       });
-      output.push(...readSettings(body, context, helpers));
+      const delegation = constructor.body.match(/^\s*this\s*\(/);
+      if (delegation) {
+        const delegatedArgs = splitArgs(
+          enclosed(constructor.body, delegation[0].length - 1).text,
+        ).map((x) => value(x, context));
+        constructor = constructors.find(
+          (c) => c.params.length === delegatedArgs.length,
+        );
+        if (!constructor)
+          throw new Error(`Unsupported delegated constructor: ${className}`);
+        constructor.params.forEach((name, i) => {
+          context[name] = delegatedArgs[i];
+        });
+      }
+      for (const assignment of constructor.body.matchAll(
+        /\b(\w+)\s*=\s*([^;]+);/g,
+      )) {
+        try {
+          context[assignment[1]] = value(assignment[2], context);
+        } catch {
+          /* Setting or predicate. */
+        }
+      }
+      const instanceName =
+        source
+          .slice(Math.max(0, m.index - 90), m.index)
+          .match(/(\w+)\s*=\s*$/)?.[1] || className + "_" + m.index;
+      output.push(
+        ...readSettings(
+          constructor.body,
+          context,
+          helpers,
+          namespace ? namespace + "_" + instanceName : instanceName,
+        ),
+      );
     }
+  }
+  if (namespace) {
+    for (const item of output)
+      if (item.condition) {
+        item.condition = item.condition.replace(
+          /\b(\w+)\.(isEnabled|is|isSelected|isSelectedIgnoreCase|getInt|getDouble|getValue)\(/g,
+          (all, key, method) =>
+            output.some((s) => s.variable === namespace + "_" + key)
+              ? `${namespace}_${key}.${method}(`
+              : all,
+        );
+      }
   }
   return output;
 }
@@ -327,7 +495,61 @@ export function parseClient(sources, metadata = {}) {
       parent.match(/Category\.(\w+)/)?.[1];
     if (!categories.some((x) => x.id === category))
       throw new Error(`Unknown category: ${className}`);
-    const settings = readSettings(body, env);
+    let settings;
+    try {
+      settings = readSettings(body, env);
+      const api = { value, setting, splitArgs, enclosed };
+      for (const instance of body.matchAll(
+        /\b(\w+)\s*=\s*new\s+([\w.]+(?:Settings))\s*\(/g,
+      )) {
+        const className = instance[2].split(".").at(-1);
+        // Nested groups were expanded above. External groups register their
+        // declarations through the module's callback.
+        if (new RegExp("\\bclass\\s+" + className + "\\b").test(body)) continue;
+        const groupArgs = splitArgs(
+          enclosed(body, instance.index + instance[0].length - 1).text,
+        );
+        if (!groupArgs.some((arg) => /addSetting/.test(arg))) continue;
+        const groupSource = entry(className);
+        if (!groupSource)
+          throw new Error(`Missing settings group: ${className}`);
+        settings.push(
+          ...readConstructedSettings(
+            stripComments(groupSource),
+            className,
+            groupArgs,
+            instance[1],
+            api,
+          ),
+        );
+      }
+      if (/\.enableEntityOptions\(/.test(body)) {
+        const colorSource = stripComments(entry("ColorSetting") || "");
+        const method = colorSource.match(
+          /void\s+enableEntityOptions\s*\([^)]*\)\s*\{/,
+        );
+        if (!method) throw new Error("Missing entity color settings");
+        const colorBody = enclosed(
+          colorSource,
+          method.index + method[0].length - 1,
+          "{",
+          "}",
+        ).text;
+        for (const color of [...settings].filter((s) => s.type === "color")) {
+          const extra = readConstructedSettings(
+            colorBody,
+            "entityColors",
+            [],
+            color.variable || color.name.replace(/\W/g, "_"),
+            api,
+            color,
+          );
+          settings.push(...extra);
+        }
+      }
+    } catch (error) {
+      throw new Error(`${className}: ${error.message}`);
+    }
     if (new Set(settings.map((x) => x.name)).size !== settings.length)
       throw new Error(`Duplicate settings in ${className}`);
     const ctor = body.match(
@@ -364,8 +586,12 @@ export function parseClient(sources, metadata = {}) {
   }
   return {
     schemaVersion: 1,
+    parserVersion: 2,
     ...metadata,
-    version: entry("Vibe")?.match(/VERSION\s*=\s*"([^"]+)"/)?.[1] || "dev",
+    version:
+      entry("Vibe")?.match(/VERSION\s*=\s*"([^"]+)"/)?.[1] ||
+      sources["build.gradle"]?.match(/^version\s*=\s*['"]([^'"]+)['"]/m)?.[1] ||
+      "dev",
     categories,
     modules,
     settingCount: modules.reduce((sum, m) => sum + m.settings.length, 0),

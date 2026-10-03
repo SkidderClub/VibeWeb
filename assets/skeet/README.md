@@ -8,4 +8,4 @@ The website uses accessible HTML inputs for editing values. The color selector o
 
 `assets/fonts/vibe-minecraft.otf` contains vector outlines of the original Minecraft 1.8.9 ASCII bitmap glyphs, with the original character advances. Source: `assets/minecraft/textures/font/ascii.png` in the [official Minecraft 1.8.9 client archive](https://launcher.mojang.com/v1/objects/3870888a6c3d349d3771a3e9d16c9bf5e076b908/client.jar), published through Mojang's version manifest. Minecraft assets are owned by Mojang/Microsoft.
 
-`assets/reviews/heisthack.jpg` is the channel profile image provided by the public metadata of [@heisthacksjp on YouTube](https://www.youtube.com/@heisthacksjp), retrieved for the owner-supplied @heisthack reviews. It is bundled locally so the website does not depend on cross-site image requests.
+`assets/reviews/heisthack.jpg` is the channel profile image provided by the public metadata of [@heisthacksjp on YouTube](https://www.youtube.com/@heisthacksjp), retrieved for the owner-supplied @heisthacks reviews. It is bundled locally so the website does not depend on cross-site image requests.
